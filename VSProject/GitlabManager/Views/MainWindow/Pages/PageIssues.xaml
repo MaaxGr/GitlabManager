@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:GitlabManager.ViewModels">
+    
+    <DataTemplate DataType="{x:Type viewModels:PageIssuesViewModel}">
+        
+        <TextBlock Text="Issues"
+                   FontSize="18"/>
+        
+    </DataTemplate>
+    
+</ResourceDictionary>

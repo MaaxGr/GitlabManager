@@ -1,0 +1,7 @@
+.idea
+VSProject/.idea
+VSProject/.vs
+VSProject/GitlabManager/bin
+VSProject/GitlabManagerTest/bin
+VSProject/GitlabManager/obj
+VSProject/GitlabManagerTest/obj
