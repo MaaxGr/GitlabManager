@@ -8,6 +8,9 @@ namespace GitlabManager.Theme
         /**
          * App Colors
          */
+        public static ComponentResourceKey AccentColor 
+            => new ComponentResourceKey(typeof (AdonisUI.Colors), nameof (AccentColor));
+        
         public static ComponentResourceKey SuccessColor 
             => new ComponentResourceKey(typeof (AdonisUI.Colors), nameof (SuccessColor));
 
@@ -20,6 +23,9 @@ namespace GitlabManager.Theme
         /**
          * App Brushes
          */
+        public static ComponentResourceKey AccentBrush 
+            => new ComponentResourceKey(typeof (AdonisUI.Brushes), nameof (AccentBrush));
+        
         public static ComponentResourceKey SuccessBrush 
             => new ComponentResourceKey(typeof (AdonisUI.Brushes), nameof (SuccessBrush));
 

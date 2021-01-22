@@ -6,16 +6,20 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GitlabManager.Services.Logging;
+using MVVMLight.Messaging;
 
 namespace GitlabManager.Framework
 {
-    public class ViewModel
+    public class AppViewModel
         : INotifyPropertyChanged
             , INotifyDataErrorInfo
             , IDataErrorInfo
     {
         private readonly Dictionary<string, IList<string>> _validationErrors = new Dictionary<string, IList<string>>();
 
+        //http://dotnetpattern.com/mvvm-light-messenger
+        protected IMessenger MessengerInstance = Messenger.Default;
+        
         public string this[string propertyName]
         {
             get
@@ -80,5 +84,8 @@ namespace GitlabManager.Framework
             RaisePropertyChanged(propertyName);
             return true;
         }
+        
+        
+        
     }
 }

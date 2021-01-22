@@ -1,0 +1,20 @@
+﻿<adonisControls:AdonisWindow x:Class="GitlabManager.Views.WindowProjectDetail.WindowProjectDetail"
+                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             TitleBarBackground="#3D3D4C"
+                             Title="{Binding WindowTitle}"
+                             Width="1280"
+                             Height="720"
+                             WindowStartupLocation="CenterOwner"
+                             xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
+                             xmlns:viewmodels="clr-namespace:GitlabManager.ViewModels">
+
+    <Window.DataContext>
+        <viewmodels:WindowProjectDetailViewModel />
+    </Window.DataContext>
+    
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="{ Binding ProjectNameWithNameSpace }" />
+    </StackPanel>
+    
+</adonisControls:AdonisWindow>

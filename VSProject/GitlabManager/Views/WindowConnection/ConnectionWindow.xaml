@@ -9,7 +9,12 @@
                              Height="300"
                              WindowStartupLocation="CenterOwner"
                              xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
-                             xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI">
+                             xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+                             xmlns:viewmodels="clr-namespace:GitlabManager.ViewModels">
+    
+    <Window.DataContext>
+        <viewmodels:ConnectionWindowViewModel />
+    </Window.DataContext>
 
     <adonisControls:AdonisWindow.TitleBarContent>
         <StackPanel Orientation="Horizontal"

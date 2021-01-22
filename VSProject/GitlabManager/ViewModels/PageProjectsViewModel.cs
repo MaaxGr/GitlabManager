@@ -1,59 +1,113 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
-using GitLabApiClient.Models.Projects.Responses;
+using System.Windows.Input;
 using GitlabManager.Enums;
 using GitlabManager.Framework;
-using GitlabManager.Services.Gitlab;
+using GitlabManager.Model;
+using GitlabManager.Services.DI;
+using GitlabManager.Services.Logging;
+using GitlabManager.Utils;
 
 namespace GitlabManager.ViewModels
 {
     public class PageProjectsViewModel
-        : ViewModel, IApplicationContentView
+        : AppViewModel, IApplicationContentView
     {
-        
-        // Page definition
+        /*
+         * Page Meta
+         */
         public string PageName => "Projects";
         public AppNavigationSection Section => AppNavigationSection.Operation;
-        
-        // Loading state
+
         private bool _isLoading;
+
         public bool IsLoading
         {
             get => _isLoading;
             set => SetProperty(ref _isLoading, value);
         }
 
-        // List of projects
-        private ObservableCollection<Project> _listOfProjects;
+        /*
+         * Dependencies
+         */
+        private readonly PageProjectsModel _pageModel;
+        private readonly IDynamicDependencyProvider _dynamicDependencyProvider;
 
-        public ObservableCollection<Project> ListOfProjects
+        /*
+         * Properties
+         */
+        // list of displayed projects
+        public List<PageProjectsSingleProjectViewModel> Projects => GetAllProjects();
+
+        // currently selected project
+        public PageProjectsSingleProjectViewModel SelectedProject { get; set; }
+
+        // currently entered search text
+        public string SearchText
         {
-            get => _listOfProjects;
-            set => SetProperty(ref _listOfProjects, value);
+            get => _pageModel.SearchText;
+            set => _pageModel.RefreshSearch(value);
+        }
+
+        /*
+         * Commands
+         */
+        public ICommand EnterPressedCommand { get; }
+
+        public PageProjectsViewModel(PageProjectsModel pageModel, IDynamicDependencyProvider dynamicDependencyProvider)
+        {
+            // init dependencies
+            _pageModel = pageModel;
+            _pageModel.PropertyChanged += ProjectsModelPropertyChangedHandler;
+            _dynamicDependencyProvider = dynamicDependencyProvider;
+
+            // init commands
+            EnterPressedCommand = new AppDelegateCommand<object>(o => EnterPressedCommandExecutor());
         }
 
         public async Task Init()
         {
-            var gitlabRepo = new GitlabServiceImpl();
-            
-            var projects = await gitlabRepo.GetProjects();
+            await _pageModel.Init();
+        }
 
-            var localList = new ObservableCollection<Project>();
 
-            var index = 0;
-            
-            foreach (var project in projects)
+        /*
+        * Utilities
+        */
+        // handle property changes from page model
+        private void ProjectsModelPropertyChangedHandler(object sender, PropertyChangedEventArgs eventArgs)
+        {
+            switch (eventArgs.PropertyName)
             {
-                localList.Add(project);
-                index++;
-
-                if (index == 10)
-                {
+                case nameof(PageProjectsModel.DisplayedProjectsSorted):
+                    LoggingService.LogD("Update projects in vm...");
+                    RaisePropertyChanged(nameof(Projects));
                     break;
-                }
             }
-            ListOfProjects = localList;
-                
+        }
+
+        // get all projects from model and convert them to viewmodel objects
+        private List<PageProjectsSingleProjectViewModel> GetAllProjects()
+        {
+            return _pageModel.DisplayedProjectsSorted.Select(modelProject =>
+                {
+                    var projectVm = _dynamicDependencyProvider.GetInstance<PageProjectsSingleProjectViewModel>();
+                    projectVm.Project = modelProject;
+                    projectVm.NameWithNamespace = modelProject.NameWithNamespace;
+                    projectVm.Description = modelProject.Description;
+                    projectVm.LastUpdatedAgo = DateTimeUtils.UnixTimestampAgoHumanReadable(modelProject.LastUpdated);
+                    projectVm.TagList = modelProject.TagList.ToList();
+                    return projectVm;
+                }
+            ).ToList();
+        }
+
+        private void EnterPressedCommandExecutor()
+        {
+            SelectedProject?.OpenProjectDetailWindow();
+
         }
     }
 }

@@ -3,14 +3,14 @@ using System.Windows.Controls;
 using AdonisUI.Controls;
 using GitlabManager.ViewModels;
 
-namespace GitlabManager
+namespace GitlabManager.Views.WindowMain
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : AdonisWindow
     {
-        public MainWindow(MainWindowViewModel viewModel)
+        public MainWindow(WindowMainViewModel viewModel)
         {
             DataContext = viewModel;
             InitializeComponent();

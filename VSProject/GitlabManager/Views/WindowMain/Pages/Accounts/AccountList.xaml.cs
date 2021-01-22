@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
-namespace GitlabManager.Views.Accounts2
+namespace GitlabManager.Views.MainWindow.Pages.Accounts
 {
     public partial class AccountList2 : UserControl
     {

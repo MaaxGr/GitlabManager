@@ -12,6 +12,7 @@
     <PackageReference Include="AdonisUI.ClassicTheme" Version="1.16.0" />
     <PackageReference Include="GitLabApiClient" Version="1.7.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.1" />
+    <PackageReference Include="MVVMLight.Messaging" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,10 +28,6 @@
       <XamlRuntime>Wpf</XamlRuntime>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\MainWindow\Pages\ProjectList" />
   </ItemGroup>
 
 </Project>

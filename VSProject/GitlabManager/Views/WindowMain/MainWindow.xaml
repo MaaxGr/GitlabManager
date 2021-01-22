@@ -1,4 +1,4 @@
-﻿<adonisControls:AdonisWindow x:Class="GitlabManager.MainWindow"
+﻿<adonisControls:AdonisWindow x:Class="GitlabManager.Views.WindowMain.MainWindow"
                              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -17,11 +17,9 @@
                              Height="720">
     
         <Window.Resources>
-            
-            
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../AppStaticResources.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="../AppStaticResources.xaml" />
                 <ResourceDictionary Source="Views.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
@@ -89,7 +87,6 @@
             </StatusBar>
 
             <Grid>
-
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -179,12 +176,9 @@
                 <Grid Grid.Column="1"
                       ClipToBounds="True">
                     
-                    <ScrollViewer>
-                        <ContentControl Content="{Binding SelectedPage, ValidatesOnDataErrors=False, ValidatesOnNotifyDataErrors=False}"
-                                        IsEnabled="{Binding IsReadOnly, Converter={x:Static converters:BoolToInverseBoolConverter.Instance}}"
-                                        Margin="{adonisUi:Space 1}"/>
-                    </ScrollViewer>
-
+                    <ContentControl Content="{Binding SelectedPage, ValidatesOnDataErrors=False, ValidatesOnNotifyDataErrors=False}"
+                                    IsEnabled="{Binding IsReadOnly, Converter={x:Static converters:BoolToInverseBoolConverter.Instance}}"
+                                    Margin="{adonisUi:Space 1}"/>
 
                     <Grid>
                         <Grid.Style>

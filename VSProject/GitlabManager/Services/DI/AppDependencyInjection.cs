@@ -7,6 +7,8 @@ using GitlabManager.Services.Resources;
 using GitlabManager.Services.WindowOpener;
 using GitlabManager.ViewModels;
 using GitlabManager.Views.ConnectionWindow;
+using GitlabManager.Views.WindowMain;
+using GitlabManager.Views.WindowProjectDetail;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GitlabManager.Services.DI
@@ -46,19 +48,23 @@ namespace GitlabManager.Services.DI
 
             // Models
             services.AddTransient(typeof(ConnectionWindowModel));
-            services.AddSingleton(typeof(PageAccountsModel)); // has to be singleton (shared with child vm)
+            services.AddTransient(typeof(PageAccountsModel));
+            services.AddTransient(typeof(PageProjectsModel)); 
 
             // ViewModels
             services.AddTransient(typeof(PageAccountsSingleAccountViewModel));
             services.AddTransient(typeof(PageAccountsViewModel));
             services.AddTransient(typeof(ConnectionWindowViewModel));
-            services.AddSingleton(typeof(MainWindowViewModel));
-            services.AddSingleton(typeof(ConnectionWindowViewModel));
-            
+            services.AddTransient(typeof(WindowMainViewModel));
+            services.AddTransient(typeof(ConnectionWindowViewModel));
+            services.AddTransient(typeof(PageProjectsViewModel));
+            services.AddTransient(typeof(PageProjectsSingleProjectViewModel));
+            services.AddTransient(typeof(WindowProjectDetailViewModel));
+
             // Window
             services.AddTransient(typeof(MainWindow));
             services.AddTransient(typeof(ConnectionWindow));
+            services.AddTransient(typeof(WindowProjectDetail));
         }
-        
     }
 }

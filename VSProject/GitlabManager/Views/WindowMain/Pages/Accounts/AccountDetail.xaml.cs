@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace GitlabManager.Views.Accounts2
+namespace GitlabManager.Views.MainWindow.Pages.Accounts
 {
     public partial class AccountDetail : UserControl
     {

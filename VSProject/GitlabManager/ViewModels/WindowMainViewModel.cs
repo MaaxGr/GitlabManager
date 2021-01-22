@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace GitlabManager.ViewModels
 {
     
-    public class MainWindowViewModel : ViewModel
+    public class WindowMainViewModel : AppViewModel
     {
         
         private readonly ObservableCollection<IApplicationContentView> _pages;
@@ -108,7 +108,7 @@ namespace GitlabManager.ViewModels
 
         private IServiceProvider serviceProvider;
         
-        public MainWindowViewModel(IServiceProvider serviceProvider, DatabaseService service)
+        public WindowMainViewModel(IServiceProvider serviceProvider, DatabaseService service)
         {
             this.serviceProvider = serviceProvider;
             
@@ -132,7 +132,7 @@ namespace GitlabManager.ViewModels
 
         private IEnumerable<IApplicationContentView> CreateAllPages()
         {
-            yield return new PageProjectsViewModel();
+            yield return serviceProvider.GetRequiredService<PageProjectsViewModel>();
             yield return new PageIssuesViewModel();
             yield return serviceProvider.GetRequiredService<PageAccountsViewModel>();
         }

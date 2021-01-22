@@ -51,22 +51,11 @@ namespace GitlabManager.Model
             // run task to check if connection can be established
             var connectionCheckTask = Task.Run(async () =>
             {
-                try
-                {
-                    var gitlabClient = _gitlabService.GetGitlabClient(_hostUrl, _authenticationToken);
-                    var success = await gitlabClient.IsConnectionEstablished();
+                var gitlabClient = _gitlabService.GetGitlabClient(_hostUrl, _authenticationToken);
+                var (success, message) = await gitlabClient.IsConnectionEstablished();
                     
-                    SetState(success ? ConnectionState.Success() : ConnectionState.Error("Unknown error"));
-                }
-                catch (Exception e)
-                {
-                    SetState(ConnectionState.Error(e.Message));
-                }
-                finally
-                {
-                    progressReportCancellationTokenSource.Cancel();
-                }
-                
+                SetState(success ? ConnectionState.Success() : ConnectionState.Error(message));
+                progressReportCancellationTokenSource.Cancel();
             }, connectionCheckCancellationToken);
 
             // run tasks to update progress

@@ -1,0 +1,119 @@
+﻿<UserControl x:Class="GitlabManager.Views.MainWindow.Pages.ProjectList.AreaProjectlist"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:GitlabManager.Views.MainWindow.Pages.ProjectList"
+             xmlns:theme="clr-namespace:GitlabManager.Theme"
+             xmlns:visualBasic="clr-namespace:Microsoft.VisualBasic;assembly=Microsoft.VisualBasic.Core"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+
+
+    <StackPanel Margin="10" VerticalAlignment="Stretch">
+        <TextBlock FontSize="16" Margin="0,0,0,20">Projectlist</TextBlock>
+
+        <ListBox
+            ItemsSource="{Binding Projects, Mode=OneWay}"
+            SelectedItem="{Binding SelectedProject}"
+            Margin="0"
+            Padding="0">
+            
+            <ListBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding EnterPressedCommand }" />
+            </ListBox.InputBindings>
+            
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                    <Setter Property="Margin" Value="0,0,0,10" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="BorderThickness" Value="0" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border>
+                        <Border.InputBindings>
+                            <MouseBinding Gesture="LeftDoubleClick"                                           
+                                          Command="{Binding ItemDoubleClickCommand}"/>
+                        </Border.InputBindings>
+                        
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <!-- https://stackoverflow.com/questions/50323638/wpf-xaml-listbox-selected-item-border-color -->
+                                <Style.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                        Value="True">
+                                        <Setter Property="BorderBrush" Value="Red" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid>
+                            <Grid Background="#535560">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Column="0" Grid.Row="0" Margin="10, 10, 10, 0">
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Foreground="White" FontSize="20"
+                                                   Text="{ Binding NameWithNamespace }" />
+                                        <TextBlock MaxWidth="400" HorizontalAlignment="Left"
+                                                   TextAlignment="Left"
+                                                   Foreground="LightGray" TextWrapping="Wrap"
+                                                   Text="{ Binding Description }" />
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Grid.Row="0" Margin="10, 10, 10, 0" />
+
+                                <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom">
+                                    <StackPanel Orientation="Horizontal" Margin="10, 0,10 ,10"
+                                                HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                                MaxWidth="400">
+                                        <ItemsControl ItemsSource="{Binding TagList}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock
+                                                        Background="{StaticResource {x:Static theme:ThemeConstants.AccentBrush}}"
+                                                        FontSize="12" Padding="2" Margin="0,0,10,0"
+                                                        Text="{Binding}" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Grid.Row="1">
+                                    <StackPanel Orientation="Vertical" Margin="10,0,10,10">
+                                        <TextBlock TextAlignment="Right" Foreground="DarkGray">last updated</TextBlock>
+                                        <TextBlock TextAlignment="Right" Foreground="DarkGray" FontSize="16"
+                                                   Text="{ Binding LastUpdatedAgo }" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </StackPanel>
+
+</UserControl>

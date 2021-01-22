@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:GitlabManager.ViewModels"
+                    xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+                    xmlns:projectlist="clr-namespace:GitlabManager.Views.MainWindow.Pages.ProjectList">
+    
+    <DataTemplate DataType="{x:Type viewModels:PageProjectsViewModel}">
+        
+        <DockPanel Margin="{ DynamicResource TotalMargin }">
+            <TextBlock DockPanel.Dock="Top" FontWeight="Bold" Text="Projects" FontSize="18" Margin="0,0,0,15" />
+            
+            <DockPanel>
+                
+                <!-- Right Area -->
+                <StackPanel Width="300" DockPanel.Dock="Right" Orientation="Vertical">
+                    <projectlist:AreaSettings Background="#3D3E48" />
+                </StackPanel>
+                
+                <!-- Left Area -->
+                <DockPanel Margin="0,0,20,0">
+                    <projectlist:AreaSearch DockPanel.Dock="Top" Background="#3D3E48" Margin="0,0,0,20" />
+                    
+                    <ScrollViewer>
+                        <projectlist:AreaProjectlist Background="#3D3E48" />
+                    </ScrollViewer>
+
+                </DockPanel>
+                
+            </DockPanel>
+            
+        </DockPanel>
+        
+        
+    </DataTemplate>
+    
+</ResourceDictionary>

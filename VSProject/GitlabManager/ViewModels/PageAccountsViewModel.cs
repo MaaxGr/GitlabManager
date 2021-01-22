@@ -7,6 +7,7 @@ using System.Windows.Input;
 using GitlabManager.Enums;
 using GitlabManager.Framework;
 using GitlabManager.Model;
+using GitlabManager.Notifications;
 using GitlabManager.Services.Database.Model;
 using GitlabManager.Services.DI;
 using GitlabManager.Services.Logging;
@@ -15,7 +16,7 @@ using GitlabManager.Views.ConnectionWindow;
 
 namespace GitlabManager.ViewModels
 {
-    public class PageAccountsViewModel : ViewModel, IApplicationContentView
+    public class PageAccountsViewModel : AppViewModel, IApplicationContentView
     {
         /*
          * Page Meta
@@ -72,9 +73,17 @@ namespace GitlabManager.ViewModels
             _pageModel = pageModel;
             _pageModel.PropertyChanged += AccountModelPropertyChangedHandler;
             _dynamicDependencyProvider = dynamicDependencyProvider;
-            
+
             // init commands
             NewAccountCommand = new AppDelegateCommand<object>(_ => NewAccountCommandExecutor());
+
+            // init notification handlers
+            MessengerInstance.Register<DeleteAccountNotification>(
+                this, notification => _pageModel.DeleteAccount(notification.Account)
+            );
+            MessengerInstance.Register<SaveAccountNotification>(
+                this, notification => _pageModel.SaveAccount(notification.Account)
+            );
         }
 
         /*
@@ -118,7 +127,6 @@ namespace GitlabManager.ViewModels
 
         private PageAccountsSingleAccountViewModel CreateAccountViewModel(Account account)
         {
-            
             var accountVm = _dynamicDependencyProvider.GetInstance<PageAccountsSingleAccountViewModel>();
             accountVm.StoredAccount = account;
             accountVm.Id = account.Id;
@@ -128,7 +136,7 @@ namespace GitlabManager.ViewModels
             accountVm.AuthenticationToken = account.AuthenticationToken;
             return accountVm;
         }
-        
+
         private PageAccountsSingleAccountViewModel FindSelectedViewModelInAccountList()
         {
             var sidebarAccount = Accounts.FirstOrDefault(vm => vm.Id == _pageModel.SelectedAccount.Id);

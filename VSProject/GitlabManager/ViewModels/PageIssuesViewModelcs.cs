@@ -6,7 +6,7 @@ using GitlabManager.Services.Logging;
 namespace GitlabManager.ViewModels
 {
     public class PageIssuesViewModel
-        : ViewModel, IApplicationContentView
+        : AppViewModel, IApplicationContentView
     {
         public string PageName => "Issues";
         public AppNavigationSection Section => AppNavigationSection.Operation;

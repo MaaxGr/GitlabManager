@@ -1,4 +1,5 @@
-﻿using GitlabManager.Services.Database.Model;
+﻿using System;
+using GitlabManager.Services.Database.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace GitlabManager.Services.Database
@@ -13,6 +14,16 @@ namespace GitlabManager.Services.Database
                 "Data Source=gitlabmanager.db"
             );
             base.OnConfiguring(optionsBuilder);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Project>()
+                // Array-To-String Converter for TagList
+                .Property(e => e.TagList)
+                .HasConversion(
+                    v => string.Join(';', v),
+                    v => v.Split(';', StringSplitOptions.RemoveEmptyEntries));
         }
     }
 }

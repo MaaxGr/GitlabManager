@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows.Input;
 using AdonisUI.Controls;
 using GitlabManager.Framework;
-using GitlabManager.Model;
+using GitlabManager.Notifications;
 using GitlabManager.Services.Database.Model;
 using GitlabManager.Services.Dialog;
 using GitlabManager.Services.Logging;
@@ -11,12 +11,11 @@ using GitlabManager.Services.WindowOpener;
 
 namespace GitlabManager.ViewModels
 {
-    public class PageAccountsSingleAccountViewModel : ViewModel
+    public class PageAccountsSingleAccountViewModel : AppViewModel
     {
         /*
          * Dependencies
          */
-        private PageAccountsModel _pageAccountsModel;
         private IDialogService _dialogService;
         private IWindowOpener _windowOpener;
         
@@ -41,17 +40,16 @@ namespace GitlabManager.ViewModels
         
         public ICommand TestTokenCommand { get; }
 
-        public PageAccountsSingleAccountViewModel(PageAccountsModel pageAccountsModel, IWindowOpener windowOpener, IDialogService dialogService)
+        public PageAccountsSingleAccountViewModel(IWindowOpener windowOpener, IDialogService dialogService)
         {
             // init dependencies
-            _pageAccountsModel = pageAccountsModel;
             _dialogService = dialogService;
             _windowOpener = windowOpener;
             
             // init commands
-            this.DeleteCommand = new AppDelegateCommand<object>(DeleteCommandExecutor);
-            this.SaveCommand = new AppDelegateCommand<string>(SaveCommandExecutor);
-            this.TestTokenCommand = new AppDelegateCommand<object>(_ => TestTokenCommandExecutor());
+            DeleteCommand = new AppDelegateCommand<object>(DeleteCommandExecutor);
+            SaveCommand = new AppDelegateCommand<string>(SaveCommandExecutor);
+            TestTokenCommand = new AppDelegateCommand<object>(_ => TestTokenCommandExecutor());
             
             dialogService.Test();
         }
@@ -70,16 +68,15 @@ namespace GitlabManager.ViewModels
             if (x == MessageBoxResult.OK)
             {
                 LoggingService.LogD("DELTE Bla");
-                _pageAccountsModel.DeleteAccount(StoredAccount);
+                MessengerInstance.Send(new DeleteAccountNotification(StoredAccount));
             }
         }
 
         private void SaveCommandExecutor(Object o)
         {
             LoggingService.LogD($"Save: {Id} {Identifier}");
-
             PatchAccount();
-            _pageAccountsModel.SaveAccount(StoredAccount);
+            MessengerInstance.Send(new SaveAccountNotification(StoredAccount));
         }
 
         private void TestTokenCommandExecutor()

@@ -14,7 +14,7 @@ namespace GitlabManager.Views
         {
             AppDependencyInjection.Init();
             
-            MainWindow = AppDependencyInjection.ServiceProvider.GetRequiredService<MainWindow>();
+            MainWindow = AppDependencyInjection.ServiceProvider.GetRequiredService<WindowMain.MainWindow>();
             MainWindow.Show();
         }
 

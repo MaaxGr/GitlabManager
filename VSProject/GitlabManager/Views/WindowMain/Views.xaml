@@ -2,9 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Pages/PageProjects.xaml"></ResourceDictionary>
-        <ResourceDictionary Source="Pages/PageIssues.xaml"></ResourceDictionary>
-        <ResourceDictionary Source="Pages/Accounts/PageAccounts.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="Pages/ProjectList/PageProjects.xaml" />
+        <ResourceDictionary Source="Pages/PageIssues.xaml" />
+        <ResourceDictionary Source="Pages/Accounts/PageAccounts.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

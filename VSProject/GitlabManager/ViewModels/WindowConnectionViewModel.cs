@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
 using GitlabManager.Framework;
@@ -7,13 +6,11 @@ using GitlabManager.Model;
 using GitlabManager.Services.Resources;
 using GitlabManager.Theme;
 using static GitlabManager.Model.ConnectionState;
-using Brush = System.Drawing.Brush;
 using Brushes = AdonisUI.Brushes;
-using Color = System.Drawing.Color;
 
 namespace GitlabManager.ViewModels
 {
-    public class ConnectionWindowViewModel : ViewModel
+    public class ConnectionWindowViewModel : AppViewModel
     {
         /*
          * Dependencies
@@ -38,6 +35,10 @@ namespace GitlabManager.ViewModels
         /*
          * Constructor
          */
+        public ConnectionWindowViewModel()
+        {
+        }
+
         public ConnectionWindowViewModel(ConnectionWindowModel windowModel, IResources resources)
         {
             _windowModel = windowModel;
