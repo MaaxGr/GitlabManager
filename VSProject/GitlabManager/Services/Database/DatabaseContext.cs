@@ -6,7 +6,8 @@ namespace GitlabManager.Services.Database
 {
     public class DatabaseContext : DbContext
     {
-        public DbSet<Account> Accounts { get; set; }
+        public DbSet<DbAccount> Accounts { get; set; }
+        public DbSet<DbProject> Projects { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -18,7 +19,7 @@ namespace GitlabManager.Services.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Project>()
+            modelBuilder.Entity<DbProject>()
                 // Array-To-String Converter for TagList
                 .Property(e => e.TagList)
                 .HasConversion(

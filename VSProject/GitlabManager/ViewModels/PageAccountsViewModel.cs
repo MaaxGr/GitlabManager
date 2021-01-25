@@ -125,7 +125,7 @@ namespace GitlabManager.ViewModels
             }
         }
 
-        private PageAccountsSingleAccountViewModel CreateAccountViewModel(Account account)
+        private PageAccountsSingleAccountViewModel CreateAccountViewModel(DbAccount account)
         {
             var accountVm = _dynamicDependencyProvider.GetInstance<PageAccountsSingleAccountViewModel>();
             accountVm.StoredAccount = account;

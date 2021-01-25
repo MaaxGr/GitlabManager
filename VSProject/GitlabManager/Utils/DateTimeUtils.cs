@@ -14,6 +14,12 @@ namespace GitlabManager.Utils
             );
         }
         
+        public static DateTime UnixMillisToDateTime( double millis )
+        {
+            return new DateTime(1970,1,1,0,0,0,0, DateTimeKind.Utc)
+                .AddMilliseconds(millis).ToLocalTime();
+        }
+        
         public static string UnixTimestampAgoHumanReadable(long lastActivityUnixStamp)
         {
             var currentUnixStamp = DateTime.Now.ToUnixTimestamp();

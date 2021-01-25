@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using GitlabManager.Services.Database.Model;
-using GitlabManager.Services.Logging;
 using Microsoft.EntityFrameworkCore;
 
 namespace GitlabManager.Services.Database
@@ -12,38 +12,42 @@ namespace GitlabManager.Services.Database
 
         private readonly DatabaseContext _context = new DatabaseContext();
 
-        public ObservableCollection<Account> Accounts;
-
-        public DatabaseService()
-        {
-            LoggingService.LogD("Create Database...");
-            //_context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
-        }
+        public ObservableCollection<DbAccount> Accounts;
+        public ObservableCollection<DbProject> Projects;
 
         public void Init()
         {
-            _context.Accounts.Load();
-            Accounts = _context.Accounts.Local.ToObservableCollection();
+            //_context.Database.EnsureDeleted();
+            CreateProd();
         }
 
-        public void DeleteAccount(Account account)
+        private void CreateProd()
+        {
+            _context.Database.EnsureCreated();
+            _context.Accounts.Load();
+            _context.Projects.Load();
+            
+            Accounts = _context.Accounts.Local.ToObservableCollection();
+            Projects = _context.Projects.Local.ToObservableCollection();
+        }
+
+        public void DeleteAccount(DbAccount account)
         {
             _context.Accounts.Remove(account);
             _context.SaveChanges();
         }
 
-        public void AddAccount(Account account)
+        public void AddAccount(DbAccount account)
         {
             _context.Accounts.Add(account);
             _context.SaveChanges();
         }
         
         //https://stackoverflow.com/questions/36856073/the-instance-of-entity-type-cannot-be-tracked-because-another-instance-of-this-t
-        public void UpdateAccount(Account account)
+        public void UpdateAccount(DbAccount account)
         {
             // get local
-            var local = _context.Set<Account>()
+            var local = _context.Set<DbAccount>()
                 .Local
                 .FirstOrDefault(entry => entry.Id.Equals(account.Id));
 
@@ -59,6 +63,31 @@ namespace GitlabManager.Services.Database
             _context.SaveChanges();
 
         }
-        
+
+        public DbProject GetProject(int accountId, int gitlabProjectId)
+        {
+            return Projects
+                .FirstOrDefault(pr => pr.AccountId == accountId && pr.GitlabProjectId == gitlabProjectId);
+        }
+
+        public async Task<int> InsertProject(DbProject project)
+        {
+            _context.Add(project);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> UpdateProject(DbProject project)
+        {
+            _context.Update(project);
+            return await _context.SaveChangesAsync();
+        }
+
+        public void UpdateAccountLastProjectUpdate(int accountId, long lastProjectUpdateAt)
+        {
+            var account = Accounts.First(ac => ac.Id == accountId);
+            account.LastProjectUpdateAt = lastProjectUpdateAt;
+            UpdateAccount(account);
+        }
+
     }
 }

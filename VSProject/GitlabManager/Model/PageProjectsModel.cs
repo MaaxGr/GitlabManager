@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using GitlabManager.Framework;
+using GitlabManager.Services.BusinessLogic;
 using GitlabManager.Services.Database;
 using GitlabManager.Services.Database.Model;
 using GitlabManager.Services.Gitlab;
@@ -18,18 +18,19 @@ namespace GitlabManager.Model
          */
         private DatabaseService _databaseService;
         private IGitlabService _gitlabService;
+        private GitlabProjectManager _gitlabProjectManager;
 
         /*
          * Internal properties
          */
         // all loaded projects
-        private List<Project> _projects = new List<Project>();
+        private List<DbProject> _projects = new List<DbProject>();
 
         /*
          * Exposed properties for view model
          */
         // all projects that should be displayed
-        public ReadOnlyCollection<Project> DisplayedProjectsSorted => GetDisplayedProjects();
+        public ReadOnlyCollection<DbProject> DisplayedProjectsSorted => GetDisplayedProjects();
 
 
         // currently entered search text
@@ -38,10 +39,11 @@ namespace GitlabManager.Model
         /*
          * Constructor
          */
-        public PageProjectsModel(DatabaseService databaseService, IGitlabService gitlabService)
+        public PageProjectsModel(DatabaseService databaseService, IGitlabService gitlabService, GitlabProjectManager gitlabProjectManager)
         {
             _databaseService = databaseService;
             _gitlabService = gitlabService;
+            _gitlabProjectManager = gitlabProjectManager;
         }
 
         /*
@@ -57,18 +59,9 @@ namespace GitlabManager.Model
 
             foreach (var account in databaseAccounts)
             {
-                var gitlabClient = _gitlabService.GetGitlabClient(account.HostUrl, account.AuthenticationToken);
-                var (success, errorMessage) = await gitlabClient.IsConnectionEstablished();
-                if (!success) continue; // ignore accounts with invalid connection
+                await _gitlabProjectManager.UpdateProjectsForAccount(account);
 
-                var apiProjects = await gitlabClient.GetProjects();
-
-                foreach (var apiProject in apiProjects)
-                {
-                    var project = BuildProject(account.Id, apiProject);
-                    _projects.Add(project);
-                }
-
+                _projects = _databaseService.Projects.ToList();
                 RaiseUpdateList();
             }
         }
@@ -85,24 +78,9 @@ namespace GitlabManager.Model
         /*
          * Utility methods
          */
-        private Project BuildProject(int accountId, GitLabApiClient.Models.Projects.Responses.Project apiProject)
+        private ReadOnlyCollection<DbProject> GetDisplayedProjects()
         {
-            var lastUpdatedUnixTime = DateTimeUtils.CreateDateTimeFromIso8691(apiProject.LastActivityAt)
-                .ToUnixTimestamp();
-            
-            return new Project()
-            {
-                AccountId = accountId,
-                Description = apiProject.Description,
-                NameWithNamespace = apiProject.NameWithNamespace,
-                LastUpdated = lastUpdatedUnixTime,
-                TagList = apiProject.TagList.ToArray()
-            };
-        }
-
-        private ReadOnlyCollection<Project> GetDisplayedProjects()
-        {
-            var collectedProjects = new List<Project>();
+            var collectedProjects = new List<DbProject>();
 
             foreach (var project in _projects)
             {

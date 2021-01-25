@@ -46,8 +46,7 @@ namespace GitlabManager.Model
             var progressReportCancellationTokenSource = new CancellationTokenSource();
             var connectionCheckCancellationToken = connectionCheckCancellationTokenSource.Token;
             var progressReportCancellationToken = progressReportCancellationTokenSource.Token;
-            
-            
+
             // run task to check if connection can be established
             var connectionCheckTask = Task.Run(async () =>
             {

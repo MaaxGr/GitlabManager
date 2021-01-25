@@ -23,13 +23,13 @@ namespace GitlabManager.Model
          * Properties
          */
         // available accounts
-        private List<Account> _accounts = new List<Account>();
-        public ReadOnlyCollection<Account> Accounts => _accounts.AsReadOnly();
-        public ReadOnlyCollection<Account> AccountsSorted => 
+        private List<DbAccount> _accounts = new List<DbAccount>();
+        public ReadOnlyCollection<DbAccount> Accounts => _accounts.AsReadOnly();
+        public ReadOnlyCollection<DbAccount> AccountsSorted => 
             _accounts.OrderBy(acc => acc.Identifier).ToReadonlyCollection();
         
         // currently selected account
-        public Account SelectedAccount { get; private set; }
+        public DbAccount SelectedAccount { get; private set; }
 
         /**
          * Constructor
@@ -60,14 +60,14 @@ namespace GitlabManager.Model
             RaiseSelectedAccountChange();
         }
 
-        public void SetSelectedAccount(Account account)
+        public void SetSelectedAccount(DbAccount account)
         {
             LoggingService.LogD($"Set 1: {account.Identifier}");
             SelectedAccount = account;
             RaiseSelectedAccountChange();
         }
 
-        public void SaveAccount(Account accountToSave)
+        public void SaveAccount(DbAccount accountToSave)
         {
             // insert if id is 0, else update
             if (accountToSave.Id == 0)
@@ -81,7 +81,7 @@ namespace GitlabManager.Model
             }
         }
 
-        private void AddAccount(Account accountToAdd)
+        private void AddAccount(DbAccount accountToAdd)
         {
             // add entry to local model
             _accounts.Add(accountToAdd);
@@ -96,7 +96,7 @@ namespace GitlabManager.Model
             });
         }
 
-        private void UpdateAccount(Account accountToUpdate)
+        private void UpdateAccount(DbAccount accountToUpdate)
         {
             // update in local model
             SelectedAccount = accountToUpdate;
@@ -109,7 +109,7 @@ namespace GitlabManager.Model
             Task.Run(() => _databaseService.UpdateAccount(accountToUpdate));
         }
         
-        public void DeleteAccount(Account accountToDelete)
+        public void DeleteAccount(DbAccount accountToDelete)
         {
             // delete account in model
             _accounts.DeleteWhere(account => account.Id == accountToDelete.Id);
@@ -125,9 +125,9 @@ namespace GitlabManager.Model
             LoggingService.LogD($"delete account! {accountToDelete.Id}");
         }
         
-        private static Account ProvideNewEmptyAccount()
+        private static DbAccount ProvideNewEmptyAccount()
         {
-            var account = new Account {Id = 0};
+            var account = new DbAccount {Id = 0};
             return account;
         }
 

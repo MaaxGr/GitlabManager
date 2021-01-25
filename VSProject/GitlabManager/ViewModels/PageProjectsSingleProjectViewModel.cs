@@ -13,7 +13,7 @@ namespace GitlabManager.ViewModels
          */
         private IWindowOpener _windowOpener;
 
-        public Project Project { get; set; }
+        public DbProject DbProject { get; set; }
 
         public string NameWithNamespace { get; set; }
         
@@ -39,7 +39,7 @@ namespace GitlabManager.ViewModels
          */
         public void OpenProjectDetailWindow()
         {
-            _windowOpener.OpenProjectDetailWindow(Project.Id);
+            _windowOpener.OpenProjectDetailWindow(DbProject.Id);
         }
     }
     

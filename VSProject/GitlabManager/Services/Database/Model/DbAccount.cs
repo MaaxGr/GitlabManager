@@ -1,6 +1,9 @@
-﻿namespace GitlabManager.Services.Database.Model
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace GitlabManager.Services.Database.Model
 {
-    public class Account
+    [Table("Accounts")]
+    public class DbAccount
     {
         public int Id { get; set; }
 
@@ -11,5 +14,8 @@
         public string HostUrl { get; set; }
 
         public string AuthenticationToken { get; set; }
+        
+        public long LastProjectUpdateAt { get; set; }
+        
     }
 }

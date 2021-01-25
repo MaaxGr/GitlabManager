@@ -4,9 +4,9 @@ namespace GitlabManager.Notifications
 {
     public class SaveAccountNotification
     {
-        public Account Account { get; }
+        public DbAccount Account { get; }
 
-        public SaveAccountNotification(Account account)
+        public SaveAccountNotification(DbAccount account)
         {
             Account = account;
         }

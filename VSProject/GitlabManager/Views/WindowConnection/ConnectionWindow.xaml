@@ -10,22 +10,12 @@
                              WindowStartupLocation="CenterOwner"
                              xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
                              xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
-                             xmlns:viewmodels="clr-namespace:GitlabManager.ViewModels">
+                             xmlns:viewmodels="clr-namespace:GitlabManager.ViewModels"
+                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                             mc:Ignorable="d"
+                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                             d:DataContext="{d:DesignInstance viewmodels:ConnectionWindowViewModel, IsDesignTimeCreatable=True}">
     
-    <Window.DataContext>
-        <viewmodels:ConnectionWindowViewModel />
-    </Window.DataContext>
-
-    <adonisControls:AdonisWindow.TitleBarContent>
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Right">
-            <Button Content="?"
-                    Style="{DynamicResource {x:Static adonisUi:Styles.WindowButton}}"
-                    FontFamily="Segoe UI"
-                    FontSize="14" />
-        </StackPanel>
-    </adonisControls:AdonisWindow.TitleBarContent>
-
     <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         
         <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center" Margin="20">

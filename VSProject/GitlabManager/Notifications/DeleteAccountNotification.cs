@@ -4,9 +4,9 @@ namespace GitlabManager.Notifications
 {
     public class DeleteAccountNotification
     {
-        public Account Account { get; }
+        public DbAccount Account { get; }
 
-        public DeleteAccountNotification(Account account)
+        public DeleteAccountNotification(DbAccount account)
         {
             Account = account;
         }

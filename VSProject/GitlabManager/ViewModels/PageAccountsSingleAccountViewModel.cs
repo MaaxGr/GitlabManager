@@ -22,7 +22,7 @@ namespace GitlabManager.ViewModels
         /*
          * Properties
          */
-        public Account StoredAccount { get; set; }
+        public DbAccount StoredAccount { get; set; }
         
         public int Id { get; set; }
 

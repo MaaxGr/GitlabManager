@@ -1,6 +1,9 @@
-﻿namespace GitlabManager.Services.Database.Model
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace GitlabManager.Services.Database.Model
 {
-    public class Project
+    [Table("Projects")]
+    public class DbProject
     {
         public int Id { get; set; }
         
@@ -15,6 +18,12 @@
         public long LastUpdated { get; set; }
         
         public string[] TagList { get; set; }
+
+        public bool Stared { get; set; }
+
+        public long StaredChangeSaved { get; set; }
+        
+        public string LocalFolder { get; set; }
         
     }
 }

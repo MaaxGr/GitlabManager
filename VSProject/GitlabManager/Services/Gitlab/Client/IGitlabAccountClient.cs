@@ -10,7 +10,9 @@ namespace GitlabManager.Services.Gitlab.Client
 
         public Task<Tuple<bool, string>> IsConnectionEstablished();
 
-        public Task<IList<Project>> GetProjects();
+        public Task<IList<Project>> GetAllProjects();
+
+        public Task<IList<Project>> GetAllProjectsAfter(DateTime dateTime);
 
     }
 }

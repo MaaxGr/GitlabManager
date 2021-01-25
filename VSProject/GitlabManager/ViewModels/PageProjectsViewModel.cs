@@ -94,7 +94,7 @@ namespace GitlabManager.ViewModels
             return _pageModel.DisplayedProjectsSorted.Select(modelProject =>
                 {
                     var projectVm = _dynamicDependencyProvider.GetInstance<PageProjectsSingleProjectViewModel>();
-                    projectVm.Project = modelProject;
+                    projectVm.DbProject = modelProject;
                     projectVm.NameWithNamespace = modelProject.NameWithNamespace;
                     projectVm.Description = modelProject.Description;
                     projectVm.LastUpdatedAgo = DateTimeUtils.UnixTimestampAgoHumanReadable(modelProject.LastUpdated);

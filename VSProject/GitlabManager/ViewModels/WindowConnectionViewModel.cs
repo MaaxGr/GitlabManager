@@ -31,13 +31,6 @@ namespace GitlabManager.ViewModels
         public string ErrorText => ConnectionState.ErrorMessage;
         public SolidColorBrush StateTextColor => GenerateFancyStateTextColor(ConnectionState);
         public Visibility ProgressbarVisibility => GenerateProgressVisibility(ConnectionState);
-        
-        /*
-         * Constructor
-         */
-        public ConnectionWindowViewModel()
-        {
-        }
 
         public ConnectionWindowViewModel(ConnectionWindowModel windowModel, IResources resources)
         {

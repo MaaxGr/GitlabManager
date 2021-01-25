@@ -33,12 +33,19 @@ namespace GitlabManager.Services.Gitlab.Client
             }
         }
 
-        public async Task<IList<Project>> GetProjects()
+        public async Task<IList<Project>> GetAllProjects()
         {
-            var dateTime = new DateTime(2021, 1, 21);
-            
-            var projects = await _client.Projects.GetAsync(x => { x.LastActivityAfter = dateTime; });
-            return projects;
+            return await _client.Projects.GetAsync(x => { x.IsMemberOf = true; });
         }
+
+        public async Task<IList<Project>> GetAllProjectsAfter(DateTime dateTime)
+        {
+            return await _client.Projects.GetAsync(x =>
+            {
+                x.IsMemberOf = true;
+                x.LastActivityAfter = dateTime;
+            });
+        }
+        
     }
 }

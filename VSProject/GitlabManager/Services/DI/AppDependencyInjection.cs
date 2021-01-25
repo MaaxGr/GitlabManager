@@ -1,5 +1,6 @@
 ﻿using System;
 using GitlabManager.Model;
+using GitlabManager.Services.BusinessLogic;
 using GitlabManager.Services.Database;
 using GitlabManager.Services.Dialog;
 using GitlabManager.Services.Gitlab;
@@ -45,7 +46,8 @@ namespace GitlabManager.Services.DI
             services.AddSingleton(typeof(DatabaseService));
             services.AddSingleton<IWindowOpener>(new WindowOpenerImpl(provider));
             services.AddSingleton<IResources>(new ResourcesImpl());
-
+            services.AddSingleton(typeof(GitlabProjectManager));
+            
             // Models
             services.AddTransient(typeof(ConnectionWindowModel));
             services.AddTransient(typeof(PageAccountsModel));
