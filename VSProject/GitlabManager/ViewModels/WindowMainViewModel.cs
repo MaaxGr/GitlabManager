@@ -14,6 +14,13 @@ using Microsoft.Extensions.DependencyInjection;
 namespace GitlabManager.ViewModels
 {
     
+    /// <summary>
+    /// ViewModel for the entire Main Window that includes multiple pages
+    /// (TODO Probably a lot of that stuff can be simplified or extracted in a model)
+    ///
+    /// Based on Adonis UI Demo Template (#LOC)
+    /// <see cref="https://github.com/benruehl/adonis-ui/blob/master/src/AdonisUI.Demo/ViewModels/ApplicationViewModel.cs"/>
+    /// </summary>
     public class WindowMainViewModel : AppViewModel
     {
         

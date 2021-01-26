@@ -12,10 +12,13 @@ using GitlabManager.Services.Database.Model;
 using GitlabManager.Services.DI;
 using GitlabManager.Services.Logging;
 using GitlabManager.Utils;
-using GitlabManager.Views.ConnectionWindow;
+using GitlabManager.Views.WindowConnection;
 
 namespace GitlabManager.ViewModels
 {
+    /// <summary>
+    /// ViewModel for the complete Accounts-Page
+    /// </summary>
     public class PageAccountsViewModel : AppViewModel, IApplicationContentView
     {
         /*
@@ -47,7 +50,7 @@ namespace GitlabManager.ViewModels
          */
         // All available accounts
         public ReadOnlyCollection<PageAccountsSingleAccountViewModel> Accounts =>
-            _pageModel.Accounts.Select(CreateAccountViewModel).ToReadonlyCollection();
+            _pageModel.AccountsSorted.Select(CreateAccountViewModel).ToReadonlyCollection();
 
         // Currently selected account
         public PageAccountsSingleAccountViewModel SelectedAccountSidebar
@@ -111,7 +114,7 @@ namespace GitlabManager.ViewModels
         {
             switch (eventArgs.PropertyName)
             {
-                case nameof(PageAccountsModel.Accounts):
+                case nameof(PageAccountsModel.AccountsSorted):
                     LoggingService.LogD("Update accounts in vm...");
                     RaisePropertyChanged(nameof(Accounts));
                     RaisePropertyChanged(nameof(SelectedAccountSidebar));

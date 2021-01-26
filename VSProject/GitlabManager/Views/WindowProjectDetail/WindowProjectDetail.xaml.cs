@@ -3,6 +3,11 @@ using GitlabManager.ViewModels;
 
 namespace GitlabManager.Views.WindowProjectDetail
 {
+    /// <summary>
+    /// Codebehind ProjectDetail Window with minimal logic
+    /// * Initialize DataContext
+    /// * Provide Method for Window initialization before window will be opened
+    /// </summary>
     public partial class WindowProjectDetail : AdonisWindow
     {
 
@@ -10,6 +15,7 @@ namespace GitlabManager.Views.WindowProjectDetail
         
         public WindowProjectDetail(WindowProjectDetailViewModel windowVm)
         {
+            DataContext = windowVm;
             _windowVM = windowVm;
         }
 

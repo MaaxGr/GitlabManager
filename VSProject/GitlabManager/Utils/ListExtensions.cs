@@ -5,6 +5,10 @@ using System.Linq;
 
 namespace GitlabManager.Utils
 {
+    
+    /**
+     * Some extensions for a more convenient list access.
+     */
     public static class ListExtensions
     {
 

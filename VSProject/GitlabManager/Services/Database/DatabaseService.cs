@@ -6,7 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GitlabManager.Services.Database
 {
-
+    
+    /// <summary>
+    /// DatabaseService stores a copy of the database entries in memory,
+    /// so that the current data can be accessed synchronously.
+    ///
+    /// DatabaseService is the only class that is able to write to the database.
+    /// For that it provides utility methods that can be called from other classes.
+    /// </summary>
     public class DatabaseService
     {
 
@@ -64,10 +71,15 @@ namespace GitlabManager.Services.Database
 
         }
 
+        public DbProject GetProjectById(int projectId)
+        {
+            return Projects.First(pr => pr.Id == projectId);
+        }
+        
         public DbProject GetProject(int accountId, int gitlabProjectId)
         {
             return Projects
-                .FirstOrDefault(pr => pr.AccountId == accountId && pr.GitlabProjectId == gitlabProjectId);
+                .FirstOrDefault(pr => pr.Account.Id == accountId && pr.GitlabProjectId == gitlabProjectId);
         }
 
         public async Task<int> InsertProject(DbProject project)
@@ -87,6 +99,13 @@ namespace GitlabManager.Services.Database
             var account = Accounts.First(ac => ac.Id == accountId);
             account.LastProjectUpdateAt = lastProjectUpdateAt;
             UpdateAccount(account);
+        }
+
+        public void UpdateLocalFolderForProject(DbProject project, string folderName)
+        {
+            project.LocalFolder = folderName;
+            _context.Update(project);
+            _context.SaveChanges();
         }
 
     }

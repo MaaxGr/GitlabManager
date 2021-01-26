@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GitlabManager.Services.Database
 {
+    /// <summary>
+    /// Configures the sqlite database and registers custom converters
+    /// </summary>
     public class DatabaseContext : DbContext
     {
         public DbSet<DbAccount> Accounts { get; set; }

@@ -3,7 +3,7 @@
                     xmlns:presentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
                     xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
                     xmlns:gitlabManagerTheme="clr-namespace:GitlabManager.Theme">
-
+    
     <!-- colors -->
     <Color x:Key="{x:Static adonisUi:Colors.AccentColor}">#E2432A</Color>
     <Color x:Key="{x:Static adonisUi:Colors.AccentHighlightColor}">#BF3628</Color>

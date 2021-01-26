@@ -2,6 +2,9 @@
 
 namespace GitlabManager.Theme
 {
+    /// <summary>
+    /// Constants for the application theme that are used globally in multiple xaml files.
+    /// </summary>
     public static class ThemeConstants
     {
         

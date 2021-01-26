@@ -1,21 +1,20 @@
 ﻿using System.Windows;
 using GitlabManager.Services.DI;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace GitlabManager.Views
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    /// Codebehind Entrypoint XAML of Project.
+    /// Initializes Dependency Injection and launches Main Window
     /// </summary>
     public partial class App : Application
     {
         
         protected override void OnStartup(StartupEventArgs e)
         {
-            AppDependencyInjection.Init();
-            
-            MainWindow = AppDependencyInjection.ServiceProvider.GetRequiredService<WindowMain.MainWindow>();
-            MainWindow.Show();
+            var dependencyInjection = new AppDependencyInjection();
+            MainWindow = dependencyInjection.GetMainWindow();
+            MainWindow!.Show();
         }
 
     }

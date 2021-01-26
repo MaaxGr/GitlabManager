@@ -1,35 +1,118 @@
-﻿using GitlabManager.Framework;
-using GitlabManager.Services.Logging;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Input;
+using GitlabManager.Framework;
+using GitlabManager.Model;
 
 namespace GitlabManager.ViewModels
 {
+    /// <summary>
+    /// ViewModel for the entire Detail-Window for a single Project
+    /// Project Detail Window is opened in an own window by design, so that the user can open multiple windows
+    /// side by side.
+    /// </summary>
     public class WindowProjectDetailViewModel : AppViewModel
     {
 
-        private bool _initialized;
-        private int _projectId;
+        /*
+         * Dependencies
+         */
+        private readonly WindowProjectDetailModel _windowModel;
         
-        public string WindowTitle => GetWindowTitle();
+        /*
+         * State
+         */
+        public string WindowTitle => _windowModel.ProjectNameWithNamespace;
+        public string HeaderMainText => _windowModel.ProjectNameWithNamespace;
+        public string HeaderTopText => _windowModel.AccountIdentifier;
 
-        //public string ProjectNameWithNameSpace => _project.NameWithNamespace ?? "";
+        public string InfoDescription => _windowModel.Description;
+        public int InfoCommitCount => _windowModel.CommitCount;
+        public int InfoOpenIssuesCount => _windowModel.OpenIssueCount;
+        public int InfoGitlabProjectId => _windowModel.GitlabProjectId;
+        public int InfoStarCount => _windowModel.StarCount;
+        public List<string> InfoTagList => _windowModel.TagList;
 
-        public WindowProjectDetailViewModel()
+        public Visibility CloneLoadingVisibility =>
+            _windowModel.ProjectDownloading ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility ButtonCloneVisibility => !_windowModel.IsProjectDownloaded ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility ButtonOpenInVisibility =>
+            _windowModel.IsProjectDownloaded ? Visibility.Visible : Visibility.Collapsed;
+        
+        
+        /*
+         * Commands
+         */
+        public ICommand OpenInBrowserCommand { get; }
+        public ICommand CloneProjectCommand { get; }
+
+        public ICommand OpenInExplorerCommand { get;  }
+        public ICommand OpenInVSCodeCommand { get;  }
+        /*
+         * Constructor
+         */
+        public WindowProjectDetailViewModel(WindowProjectDetailModel windowModel)
         {
-            _initialized = false;
-        }
+            // init dependencies
+            _windowModel = windowModel;
+            _windowModel.PropertyChanged += ProjectDetailModelPropertyChangedHandler;
+            
+            // init commands
+            OpenInBrowserCommand = new AppDelegateCommand<object>(_ => _windowModel.OpenProjectInBrowser());
+            CloneProjectCommand = new AppDelegateCommand<object>(_ => _windowModel.CloneProject());
 
-        private string GetWindowTitle()
-        {
-            return $"Project: {_projectId}";
+            OpenInExplorerCommand = new AppDelegateCommand<object>(_ => _windowModel.OpenInApp("explorer"));
+            OpenInVSCodeCommand = new AppDelegateCommand<object>(_ => _windowModel.OpenInApp("vscode"));
         }
 
         public void Init(int projectId)
         {
-            _projectId = projectId;
-            LoggingService.LogD($"Iinit {projectId}");
-            
-            //RaisePropertyChanged(ProjectNameWithNameSpace);
-            RaisePropertyChanged(WindowTitle);
+            _windowModel.Init(projectId);
+        }
+        
+        /*
+         * Utilities
+         */
+        private void ProjectDetailModelPropertyChangedHandler(object sender, PropertyChangedEventArgs eventArgs)
+        {
+            switch (eventArgs.PropertyName)
+            {
+                case nameof(WindowProjectDetailModel.ProjectNameWithNamespace):
+                    RaisePropertyChanged(nameof(WindowTitle));
+                    RaisePropertyChanged(nameof(HeaderMainText));
+                    break;
+                case nameof(WindowProjectDetailModel.AccountIdentifier):
+                    RaisePropertyChanged(nameof(HeaderTopText));
+                    break;
+                case nameof(WindowProjectDetailModel.Description):
+                    RaisePropertyChanged(nameof(InfoDescription));
+                    break;
+                case nameof(WindowProjectDetailModel.CommitCount):
+                    RaisePropertyChanged(nameof(InfoCommitCount));
+                    break;
+                case nameof(WindowProjectDetailModel.StarCount):
+                    RaisePropertyChanged(nameof(InfoStarCount));
+                    break;
+                case nameof(WindowProjectDetailModel.OpenIssueCount):
+                    RaisePropertyChanged(nameof(InfoOpenIssuesCount));
+                    break;
+                case nameof(WindowProjectDetailModel.GitlabProjectId):
+                    RaisePropertyChanged(nameof(InfoGitlabProjectId));
+                    break;
+                case nameof(WindowProjectDetailModel.ProjectDownloading):
+                    RaisePropertyChanged(nameof(CloneLoadingVisibility));
+                    break;
+                case nameof(WindowProjectDetailModel.IsProjectDownloaded):
+                    RaisePropertyChanged(nameof(ButtonCloneVisibility));
+                    RaisePropertyChanged(nameof(ButtonOpenInVisibility));
+                    break;
+                case nameof(WindowProjectDetailModel.TagList):
+                    RaisePropertyChanged(nameof(InfoTagList));
+                    break;
+            }
         }
     }
 }

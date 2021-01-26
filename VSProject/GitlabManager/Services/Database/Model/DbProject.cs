@@ -2,12 +2,16 @@
 
 namespace GitlabManager.Services.Database.Model
 {
+    
+    /// <summary>
+    /// Database model for ef-core for the Projects-Table
+    /// </summary>
     [Table("Projects")]
     public class DbProject
     {
         public int Id { get; set; }
         
-        public int AccountId { get; set; }
+        public DbAccount Account { get; set; }
         
         public int GitlabProjectId { get; set; }
 

@@ -10,7 +10,11 @@ using Brushes = AdonisUI.Brushes;
 
 namespace GitlabManager.ViewModels
 {
-    public class ConnectionWindowViewModel : AppViewModel
+    /// <summary>
+    /// ViewModel for the entire ConnectionWindow that is opened by the "Test"-Button
+    /// in the Accounts Page of the Main window
+    /// </summary>
+    public class WindowConnectionViewModel : AppViewModel
     {
         /*
          * Dependencies
@@ -32,7 +36,7 @@ namespace GitlabManager.ViewModels
         public SolidColorBrush StateTextColor => GenerateFancyStateTextColor(ConnectionState);
         public Visibility ProgressbarVisibility => GenerateProgressVisibility(ConnectionState);
 
-        public ConnectionWindowViewModel(ConnectionWindowModel windowModel, IResources resources)
+        public WindowConnectionViewModel(ConnectionWindowModel windowModel, IResources resources)
         {
             _windowModel = windowModel;
             _windowModel.PropertyChanged += ConnectionWindowModelPropertyChangedHandler;

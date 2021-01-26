@@ -5,6 +5,10 @@ using System.Windows.Data;
 
 namespace GitlabManager.Converters
 {
+    
+    /// <summary>
+    /// Kann wahrscheinlich gelöscht werden? (TODO)
+    /// </summary>
     [ValueConversion(typeof(bool), typeof(bool))]
     internal class BoolToInverseBoolConverter
         : IValueConverter

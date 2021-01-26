@@ -2,6 +2,9 @@
 
 namespace GitlabManager.Services.Database.Model
 {
+    /// <summary>
+    /// Database model for ef-core for the Accounts-Table
+    /// </summary>
     [Table("Accounts")]
     public class DbAccount
     {

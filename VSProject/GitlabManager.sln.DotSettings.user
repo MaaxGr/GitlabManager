@@ -2,6 +2,6 @@
 	<s:String x:Key="/Default/CodeInspection/Highlighting/AnalysisEnabled/@EntryValue">SOLUTION</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=da91006a_002D615e_002D41f4_002D831b_002D4bb19970f83e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::931C5B4B-C69E-4AEB-BBA5-1C80B33E4211::.NETCoreApp,Version=v3.1::GitlabManagerTest.UnitTest1.Test1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::931C5B4B-C69E-4AEB-BBA5-1C80B33E4211::.NETCoreApp,Version=v3.1::GitlabManagerTest.BasicUnitTests.TestDownload&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

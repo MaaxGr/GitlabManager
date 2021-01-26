@@ -11,6 +11,9 @@ using GitlabManager.Services.WindowOpener;
 
 namespace GitlabManager.ViewModels
 {
+    /// <summary>
+    /// ViewModel that represents a Single Account in the Accounts-Page.
+    /// </summary>
     public class PageAccountsSingleAccountViewModel : AppViewModel
     {
         /*

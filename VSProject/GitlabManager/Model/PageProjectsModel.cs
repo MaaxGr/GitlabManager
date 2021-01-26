@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using GitlabManager.Enums;
 using GitlabManager.Framework;
 using GitlabManager.Services.BusinessLogic;
 using GitlabManager.Services.Database;
@@ -11,6 +13,9 @@ using GitlabManager.Utils;
 
 namespace GitlabManager.Model
 {
+    /// <summary>
+    /// Model for the Project-List Page
+    /// </summary>
     public class PageProjectsModel : AppModel
     {
         /*
@@ -31,6 +36,9 @@ namespace GitlabManager.Model
          */
         // all projects that should be displayed
         public ReadOnlyCollection<DbProject> DisplayedProjectsSorted => GetDisplayedProjects();
+
+        // mode in which the projects get sorted
+        public ProjectListSorting SortingMode { get; private set; } = ProjectListSorting.LastActivity;
 
 
         // currently entered search text
@@ -75,6 +83,13 @@ namespace GitlabManager.Model
             RaiseUpdateList();
         }
 
+        public void SetSortingMode(ProjectListSorting sorting)
+        {
+            SortingMode = sorting;
+            RaiseUpdateList();
+            RaisePropertyChanged(nameof(SortingMode));
+        }
+
         /*
          * Utility methods
          */
@@ -98,9 +113,14 @@ namespace GitlabManager.Model
                 }
             }
 
-            return collectedProjects
-                .OrderByDescending(it => it.LastUpdated)
-                .ToReadonlyCollection();
+            var sortingProjects = SortingMode switch
+            {
+                ProjectListSorting.Alphabetical => collectedProjects.OrderBy(it => it.NameWithNamespace),
+                ProjectListSorting.LastActivity => collectedProjects.OrderByDescending(it => it.LastUpdated),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            return sortingProjects.ToReadonlyCollection();
         }
 
         private void RaiseUpdateList()

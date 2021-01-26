@@ -3,6 +3,16 @@ using System.Windows.Input;
 
 namespace GitlabManager.Framework
 {
+    
+    /// <summary>
+    /// Generic Delegate implementation of the ICommand interface.
+    /// 
+    /// Inspiration: Adonis UI Demo Template
+    /// https://github.com/benruehl/adonis-ui/blob/master/src/AdonisUI.Demo/Framework/Command.cs
+    /// => Modified, so that it supports generics
+    /// #LOC
+    /// </summary>
+    /// <typeparam name="T">CommandParameter Type</typeparam>
     public class AppDelegateCommand<T> : ICommand
     {
         private readonly Predicate<T> _canExecute;

@@ -6,6 +6,9 @@ using GitlabManager.Services.WindowOpener;
 
 namespace GitlabManager.ViewModels
 {
+    /// <summary>
+    /// ViewModel for a single Project Entry in the Projects-Page List.
+    /// </summary>
     public class PageProjectsSingleProjectViewModel
     {
         /*

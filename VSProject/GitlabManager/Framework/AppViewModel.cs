@@ -10,6 +10,14 @@ using MVVMLight.Messaging;
 
 namespace GitlabManager.Framework
 {
+    /// <summary>
+    /// Base class of all View-Models
+    ///
+    /// Inspiration: Adonis UI Demo Template
+    /// https://github.com/benruehl/adonis-ui/blob/master/src/AdonisUI.Demo/Framework/ViewModel.cs
+    /// => Modified. e.g. added MVVM-Light-Messenger 
+    /// </summary>
+    /// <see cref="GitlabManager.ViewModels"/>
     public class AppViewModel
         : INotifyPropertyChanged
             , INotifyDataErrorInfo
@@ -18,7 +26,7 @@ namespace GitlabManager.Framework
         private readonly Dictionary<string, IList<string>> _validationErrors = new Dictionary<string, IList<string>>();
 
         //http://dotnetpattern.com/mvvm-light-messenger
-        protected IMessenger MessengerInstance = Messenger.Default;
+        protected readonly IMessenger MessengerInstance = Messenger.Default;
         
         public string this[string propertyName]
         {
@@ -40,7 +48,7 @@ namespace GitlabManager.Framework
 
         public IEnumerable GetErrors(string propertyName)
         {
-            if (String.IsNullOrEmpty(propertyName))
+            if (string.IsNullOrEmpty(propertyName))
                 return _validationErrors.SelectMany(kvp => kvp.Value);
 
             return _validationErrors.TryGetValue(propertyName, out var errors) ? errors : Enumerable.Empty<object>();
@@ -51,6 +59,8 @@ namespace GitlabManager.Framework
             return _validationErrors.SelectMany(kvp => kvp.Value).Where(e => !String.IsNullOrEmpty(e));
         }
 
+        // TODO validation methoden aufräumen
+        
         public void AddValidationError(string propertyName, string errorMessage)
         {
             if (!_validationErrors.ContainsKey(propertyName))

@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="GitlabManager.Views.WindowProjectDetail.AreaInfo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:GitlabManager.Views.WindowProjectDetail"
+             xmlns:theme="clr-namespace:GitlabManager.Theme"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:viewmodels="clr-namespace:GitlabManager.ViewModels"
+             d:DataContext="{d:DesignInstance viewmodels:WindowProjectDetailViewModel, IsDesignTimeCreatable=True}">
+
+    <StackPanel Orientation="Vertical" Background="#3D3E48">
+        <StackPanel Orientation="Vertical" Margin="10">
+            <TextBlock Foreground="LightGray" FontSize="15" Text="Description" />
+            <TextBlock Margin="0,5,0,0" FontSize="15" TextWrapping="Wrap"
+                       Text="{ Binding InfoDescription }" />
+
+            <Grid Margin="0,25,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+
+                <StackPanel HorizontalAlignment="Center" Grid.Column="0">
+                    <TextBlock TextAlignment="Center" Foreground="LightGray" FontSize="15">Project-ID</TextBlock>
+                    <TextBlock TextAlignment="Center" FontSize="30" Text="{ Binding InfoGitlabProjectId }" />
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Center" Grid.Column="1">
+                    <TextBlock TextAlignment="Center" Foreground="LightGray" FontSize="15">Open Issues</TextBlock>
+                    <TextBlock TextAlignment="Center" FontSize="30" Text="{ Binding InfoOpenIssuesCount}" />
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Center" Grid.Column="2">
+                    <TextBlock TextAlignment="Center" Foreground="LightGray" FontSize="15">Commits</TextBlock>
+                    <TextBlock TextAlignment="Center" FontSize="30" Text="{ Binding InfoCommitCount}" />
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Center" Grid.Column="3">
+                    <TextBlock TextAlignment="Center" Foreground="LightGray" FontSize="15">Stars</TextBlock>
+                    <TextBlock TextAlignment="Center" FontSize="30" Text="{Binding InfoStarCount}" />
+                </StackPanel>
+
+
+            </Grid>
+
+            <TextBlock Margin="0,25,0,0" Foreground="LightGray" FontSize="15" Text="Tags" />
+            <WrapPanel Orientation="Horizontal" Margin="0,5,0,50">
+                
+                <ItemsControl ItemsSource="{Binding InfoTagList}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Background="{StaticResource {x:Static theme:ThemeConstants.AccentBrush}}"
+                                FontSize="12" Padding="2" Margin="0,0,10, 10"
+                                Text="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </WrapPanel>
+
+        </StackPanel>
+    </StackPanel>
+
+</UserControl>

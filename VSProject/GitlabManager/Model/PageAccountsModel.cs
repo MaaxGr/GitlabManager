@@ -5,26 +5,26 @@ using System.Threading.Tasks;
 using GitlabManager.Framework;
 using GitlabManager.Services.Database;
 using GitlabManager.Services.Database.Model;
-using GitlabManager.Services.Gitlab;
 using GitlabManager.Services.Logging;
 using GitlabManager.Utils;
 
 namespace GitlabManager.Model
 {
+    /// <summary>
+    /// Model class for the Account-Page
+    /// </summary>
     public class PageAccountsModel : AppModel
     {
         /*
          * Dependencies
          */
         private readonly DatabaseService _databaseService;
-        private readonly IGitlabService _gitlabService;
         
         /*
          * Properties
          */
         // available accounts
         private List<DbAccount> _accounts = new List<DbAccount>();
-        public ReadOnlyCollection<DbAccount> Accounts => _accounts.AsReadOnly();
         public ReadOnlyCollection<DbAccount> AccountsSorted => 
             _accounts.OrderBy(acc => acc.Identifier).ToReadonlyCollection();
         
@@ -34,11 +34,10 @@ namespace GitlabManager.Model
         /**
          * Constructor
          */
-        public PageAccountsModel(DatabaseService databaseService, IGitlabService gitlabService)
+        public PageAccountsModel(DatabaseService databaseService)
         {
             // init dependencies
             _databaseService = databaseService;
-            _gitlabService = gitlabService;
         }
         
         /*
@@ -133,7 +132,6 @@ namespace GitlabManager.Model
 
         private void RaiseUpdateList()
         {
-            RaisePropertyChanged(nameof(Accounts));
             RaisePropertyChanged(nameof(AccountsSorted));
         }
 

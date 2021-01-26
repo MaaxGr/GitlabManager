@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewModels="clr-namespace:GitlabManager.ViewModels"
                     xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
-                    xmlns:projectlist="clr-namespace:GitlabManager.Views.MainWindow.Pages.ProjectList">
+                    xmlns:projectList="clr-namespace:GitlabManager.Views.WindowMain.Pages.ProjectList">
     
     <DataTemplate DataType="{x:Type viewModels:PageProjectsViewModel}">
         
@@ -13,15 +13,15 @@
                 
                 <!-- Right Area -->
                 <StackPanel Width="300" DockPanel.Dock="Right" Orientation="Vertical">
-                    <projectlist:AreaSettings Background="#3D3E48" />
+                    <projectList:AreaSettings Background="#3D3E48" />
                 </StackPanel>
                 
                 <!-- Left Area -->
                 <DockPanel Margin="0,0,20,0">
-                    <projectlist:AreaSearch DockPanel.Dock="Top" Background="#3D3E48" Margin="0,0,0,20" />
+                    <projectList:AreaSearch DockPanel.Dock="Top" Background="#3D3E48" Margin="0,0,0,20" />
                     
                     <ScrollViewer>
-                        <projectlist:AreaProjectlist Background="#3D3E48" />
+                        <projectList:AreaProjectlist Background="#3D3E48" />
                     </ScrollViewer>
 
                 </DockPanel>

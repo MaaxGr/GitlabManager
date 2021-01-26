@@ -2,6 +2,9 @@
 
 namespace GitlabManager.Services.Gitlab
 {
+    /// <summary>
+    /// Services that provides a interface to get multiple connections to different gitlab accounts.
+    /// </summary>
     public interface IGitlabService
     {
 

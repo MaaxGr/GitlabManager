@@ -1,11 +1,13 @@
 ﻿using System.Windows.Controls;
 
-namespace GitlabManager.Views.MainWindow.Pages.Accounts
+namespace GitlabManager.Views.WindowMain.Pages.Accounts
 {
-    public partial class AccountList2 : UserControl
+    public partial class AccountList : UserControl
     {
-
-        public AccountList2()
+        /// <summary>
+        /// Default implementation for a UserControl without any custom logic
+        /// </summary>
+        public AccountList()
         {
             InitializeComponent();
         }

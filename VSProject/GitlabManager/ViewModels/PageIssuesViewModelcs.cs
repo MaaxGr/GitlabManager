@@ -5,6 +5,10 @@ using GitlabManager.Services.Logging;
 
 namespace GitlabManager.ViewModels
 {
+    /// <summary>
+    /// ViewModel for the complete Issue-Page
+    /// TODO not implemented atm
+    /// </summary>
     public class PageIssuesViewModel
         : AppViewModel, IApplicationContentView
     {

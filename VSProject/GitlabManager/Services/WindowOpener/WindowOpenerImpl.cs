@@ -1,10 +1,14 @@
 ﻿using System.Windows;
 using GitlabManager.Services.DI;
-using GitlabManager.Views.ConnectionWindow;
+using GitlabManager.Views.WindowConnection;
 using GitlabManager.Views.WindowProjectDetail;
 
 namespace GitlabManager.Services.WindowOpener
 {
+    /// <summary>
+    /// Default implementation of <see cref="IWindowOpener"/>.
+    /// Window-Instances get created via <see cref="IDynamicDependencyProvider"/> service.
+    /// </summary>
     public class WindowOpenerImpl : IWindowOpener
     {
         private readonly IDynamicDependencyProvider _dynamicDependencyProvider;
@@ -25,8 +29,8 @@ namespace GitlabManager.Services.WindowOpener
         public void OpenProjectDetailWindow(int projectId)
         {
             var window = _dynamicDependencyProvider.GetInstance<WindowProjectDetail>();
-            window.Owner = Application.Current.MainWindow;
             window.Init(projectId);
-            window.Show();        }
+            window.Show();
+        }
     }
 }

@@ -7,6 +7,7 @@ namespace GitlabManager.Views.WindowMain
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
+    /// TODO Menu content should definitely moved to xaml
     /// </summary>
     public partial class MainWindow : AdonisWindow
     {

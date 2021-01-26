@@ -12,6 +12,9 @@ using GitlabManager.Utils;
 
 namespace GitlabManager.ViewModels
 {
+    /// <summary>
+    /// ViewModel for the entire Projects-Page in the MainWindow.
+    /// </summary>
     public class PageProjectsViewModel
         : AppViewModel, IApplicationContentView
     {
@@ -49,6 +52,12 @@ namespace GitlabManager.ViewModels
         {
             get => _pageModel.SearchText;
             set => _pageModel.RefreshSearch(value);
+        }
+
+        public ProjectListSorting ProjectSorting
+        {
+            get => _pageModel.SortingMode;
+            set => _pageModel.SetSortingMode(value);
         }
 
         /*
@@ -107,7 +116,7 @@ namespace GitlabManager.ViewModels
         private void EnterPressedCommandExecutor()
         {
             SelectedProject?.OpenProjectDetailWindow();
-
         }
+        
     }
 }

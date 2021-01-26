@@ -6,6 +6,9 @@ using GitlabManager.Services.Gitlab;
 
 namespace GitlabManager.Model
 {
+    /// <summary>
+    /// Window that displays, whether user has entered the correct host and auth token for a saved account
+    /// </summary>
     public class ConnectionWindowModel : AppModel
     {
         /*
@@ -31,8 +34,11 @@ namespace GitlabManager.Model
 
         public void Init(string hostUrl, string authenticationToken)
         {
+            // init variables
             _hostUrl = hostUrl;
             _authenticationToken = authenticationToken;
+            
+            // test connection
             TryToConnect();
         }
 

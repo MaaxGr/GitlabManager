@@ -1,5 +1,8 @@
 ﻿namespace GitlabManager.Services.WindowOpener
 {
+    /// <summary>
+    /// Service that is responsible for opening other windows inside this application
+    /// </summary>
     public interface IWindowOpener
     {
         

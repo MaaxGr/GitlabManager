@@ -2,22 +2,27 @@
 
 namespace GitlabManager.Utils
 {
+    /// <summary>
+    /// Extensions and Utility Methods for a better DateLibrary experience.
+    /// </summary>
     public static class DateTimeUtils
     {
-        
-        public static DateTime CreateDateTimeFromIso8691(string iso8601String)
+
+        public static string ToIso8691(this DateTime dateTime)
         {
-            return DateTime.Parse(
-                iso8601String,
-                null,
-                System.Globalization.DateTimeStyles.RoundtripKind
-            );
+            return dateTime.ToString("O");
         }
         
         public static DateTime UnixMillisToDateTime( double millis )
         {
             return new DateTime(1970,1,1,0,0,0,0, DateTimeKind.Utc)
                 .AddMilliseconds(millis).ToLocalTime();
+        }
+        
+        public static long ToUnixTimestamp(this DateTime dateTime)
+        {
+            var unixFirstDate = new DateTime(1970, 1, 1);
+            return (long) (dateTime.Subtract(unixFirstDate).TotalSeconds * 1000L);
         }
         
         public static string UnixTimestampAgoHumanReadable(long lastActivityUnixStamp)
@@ -45,7 +50,7 @@ namespace GitlabManager.Utils
                 return $"{differenceHours} hours ago";
             }
             
-            var differenceDays = differenceMinutes / 24;
+            var differenceDays = differenceHours / 24;
 
             if (differenceDays <= 60)
             {
@@ -56,7 +61,7 @@ namespace GitlabManager.Utils
 
             if (differenceMonths <= 24)
             {
-                return $"about {differenceDays} months ago";
+                return $"about {differenceMonths} months ago";
             }
 
             var differenceYears = differenceMonths / 12;
