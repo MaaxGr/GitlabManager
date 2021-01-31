@@ -23,7 +23,7 @@ namespace GitlabManager.Services.System
         {
             var psi = new ProcessStartInfo
             {
-                FileName = $"code",
+                FileName = "code",
                 UseShellExecute = true,
                 Arguments = folder
             };
@@ -34,9 +34,8 @@ namespace GitlabManager.Services.System
         {
             var psi = new ProcessStartInfo
             {
-                FileName = $"explorer",
-                UseShellExecute = true,
-                Arguments = folder
+                FileName = folder,
+                UseShellExecute = true
             };
             Process.Start (psi);
         }

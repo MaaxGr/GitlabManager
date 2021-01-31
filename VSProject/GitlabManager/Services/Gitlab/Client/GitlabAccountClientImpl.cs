@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GitLabApiClient;
@@ -118,24 +117,6 @@ namespace GitlabManager.Services.Gitlab.Client
             );
             return JsonConvert.DeserializeObject<JsonProject>(jsonResponse);
         }
-
-        public async Task DownloadProjectRepositoryAsZip(int gitlabProjectId, string downloadPath)
-        {
-            var webClient = new WebClient {BaseAddress = _hostUrl};
-            webClient.Headers.Add("PRIVATE-TOKEN", _authenticationToken);
-            webClient.Headers.Add("Accept: text/html, application/xhtml+xml, */*");
-            webClient.Headers.Add("User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)");
-            
-            LoggingService.LogD("START");
-            // webClient.DownloadFileCompleted += (sender, args) =>
-            // {
-            //     LoggingService.LogD("COMPLETION!");
-            // };
-            
-            await webClient.DownloadFileTaskAsync($"api/v4/projects/{gitlabProjectId}/repository/archive.zip", downloadPath);
-            LoggingService.LogD("DONE");
-        }
-
 
         private async Task<List<JsonProject>> GetProjects(int page)
         {

@@ -16,26 +16,36 @@ namespace GitlabManager.ViewModels
     /// </summary>
     public class WindowConnectionViewModel : AppViewModel
     {
-        /*
-         * Dependencies
-         */
+
+        #region Dependencies
+
         private readonly ConnectionWindowModel _windowModel;
         private readonly IResources _resources;
-        
-        /*
-         * Helper Properties
-         */
+
+        #endregion
+
+        #region Private Helper properties
+
         private ConnectionState ConnectionState => _windowModel.ConnectionState;
-        
-        /*
-         * Properties
-         */
+
+
+        #endregion
+
+        #region Public Properties for View
+
         public int CurrentProgressBarValue => ConnectionState.BarProgress;
         public string StateText => GenerateFancyStateText(ConnectionState);
         public string ErrorText => ConnectionState.ErrorMessage;
         public SolidColorBrush StateTextColor => GenerateFancyStateTextColor(ConnectionState);
         public Visibility ProgressbarVisibility => GenerateProgressVisibility(ConnectionState);
 
+        #endregion
+        
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="windowModel">Windows Model</param>
+        /// <param name="resources">Resources Loader</param>
         public WindowConnectionViewModel(ConnectionWindowModel windowModel, IResources resources)
         {
             _windowModel = windowModel;
@@ -43,17 +53,24 @@ namespace GitlabManager.ViewModels
             _resources = resources;
         }
 
-        /*
-         * Init before window opens 
-         */
+        /// <summary>
+        /// Init before window opens
+        /// </summary>
+        /// <param name="hostUrl">HostURL of gitlab instance</param>
+        /// <param name="authenticationToken">privat authentication token</param>
         public void Init(string hostUrl, string authenticationToken)
         {
             _windowModel.Init(hostUrl, authenticationToken);
         }
-        
-        /*
-         * Handle model property changes
-         */
+
+
+        #region Private Utility Methods
+
+        /// <summary>
+        /// Handle model property changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void ConnectionWindowModelPropertyChangedHandler(object sender, PropertyChangedEventArgs eventArgs)
         {
             switch (eventArgs.PropertyName)
@@ -68,9 +85,11 @@ namespace GitlabManager.ViewModels
             }
         }
         
-        /*
-         * Generate the text that is shown for a specific connection state
-         */
+        /// <summary>
+        /// Generate the text that is shown for a specific connection state
+        /// </summary>
+        /// <param name="state">connection state</param>
+        /// <returns>fancy message</returns>
         private static string GenerateFancyStateText(ConnectionState state)
         {
             return state.Type switch {
@@ -81,9 +100,11 @@ namespace GitlabManager.ViewModels
             };
         }
         
-        /*
-         * Generate the text color for a specific connection state
-         */
+        /// <summary>
+        /// Generate the text color for a specific connection state
+        /// </summary>
+        /// <param name="state">connection state</param>
+        /// <returns></returns>
         private SolidColorBrush GenerateFancyStateTextColor(ConnectionState state)
         {
             return state.Type switch
@@ -93,12 +114,19 @@ namespace GitlabManager.ViewModels
                 _ => _resources.GetBrush(Brushes.ForegroundBrush)
             };
         }
-
-        private Visibility GenerateProgressVisibility(ConnectionState state)
+        
+        /// <summary>
+        /// generate visibility of progressbar by connection state
+        /// </summary>
+        /// <param name="state">connection state</param>
+        /// <returns></returns>
+        private static Visibility GenerateProgressVisibility(ConnectionState state)
         {
             return state.Type == StateType.Loading
                 ? Visibility.Visible
                 : Visibility.Collapsed;
         }
+        
+        #endregion
     }
 }

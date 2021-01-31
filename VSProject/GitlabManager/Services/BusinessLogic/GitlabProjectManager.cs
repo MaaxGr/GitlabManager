@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GitLabApiClient.Models.Projects.Responses;
 using GitlabManager.Services.Cache;
 using GitlabManager.Services.Database;
 using GitlabManager.Services.Database.Model;
@@ -19,28 +18,41 @@ namespace GitlabManager.Services.BusinessLogic
     /// </summary>
     public class GitlabProjectManager
     {
-        /*
-         * Dependencies
-         */
-        // communication to sqlite database
+
+        #region Dependencies
+
+           
+        /// <summary>
+        /// communication to sqlite database
+        /// </summary>
         private readonly DatabaseService _databaseService;
         
-        // communication to gitlab api
+        /// <summary>
+        /// communication to gitlab api
+        /// </summary>
         private readonly IGitlabService _gitlabService;
         
-        // communication with json cache in file system
+        /// <summary>
+        /// communication with json cache in file system
+        /// </summary>
         private readonly IJsonCache _jsonCache;
+
+        #endregion
         
-        /*
-         * Constructor
-         */
         public GitlabProjectManager(DatabaseService databaseService, IGitlabService gitlabService, IJsonCache jsonCache)
         {
             _databaseService = databaseService;
             _gitlabService = gitlabService;
             _jsonCache = jsonCache;
         }
-        
+
+        #region Public Actions
+
+        /// <summary>
+        /// Async method to update local database with projects for given account.
+        /// Fetches new projects from remote gitlab api, if present.
+        /// </summary>
+        /// <param name="account">Account for that projects should be loaded</param>
         public async Task UpdateProjectsForAccount(DbAccount account)
         {
             // find projects to update
@@ -63,6 +75,45 @@ namespace GitlabManager.Services.BusinessLogic
             // update last update stamp in accounts table
             _databaseService.UpdateAccountLastProjectUpdate(account.Id, greatestUpdateStamp);
         }
+        
+        /// <summary>
+        /// Get a project by given internal project id
+        /// </summary>
+        /// <param name="projectId">Internal project id</param>
+        /// <returns></returns>
+        public DbProject GetProject(int projectId)
+        {
+            return _databaseService.GetProjectById(projectId);
+        }
+
+        /// <summary>
+        /// Get cached metadata (json serialization of gitlab project-endpoint)
+        /// </summary>
+        /// <param name="project">Database project object</param>
+        /// <returns>JsonProject with all project metatdata</returns>
+        public async Task<JsonProject> GetCachedProjectMeta(DbProject project)
+        {
+            // read from cache
+            var cachedProjectMeta = _jsonCache.ReadProject(project.GitlabProjectId);
+            
+            // return if in cache
+            if (cachedProjectMeta != null) 
+                return cachedProjectMeta;
+            
+            // write into cache
+            var account = project.Account;
+            var gitlabClient = _gitlabService.GetGitlabClient(account.HostUrl, account.AuthenticationToken);
+
+            var gitlabProject = await gitlabClient.GetProjectById(project.GitlabProjectId);
+            _jsonCache.WriteProject(gitlabProject.Id, gitlabProject);
+            
+            // read again
+            return _jsonCache.ReadProject(project.GitlabProjectId);
+        }
+
+        #endregion
+
+        #region Private Utility Methods
 
         private async Task UpdateProjectForAccount(DbAccount account, JsonProject gitlabProject)
         {
@@ -121,31 +172,7 @@ namespace GitlabManager.Services.BusinessLogic
             _jsonCache.WriteProject(projectId, gitlabProject);
         }
 
-        public DbProject GetProject(int projectId)
-        {
-            return _databaseService.GetProjectById(projectId);
-        }
+        #endregion
 
-        public async Task<JsonProject> GetCachedProjectMeta(DbProject project)
-        {
-            // read from cache
-            var cachedProjectMeta = _jsonCache.ReadProject(project.GitlabProjectId);
-            
-            // return if in cache
-            if (cachedProjectMeta != null) 
-                return cachedProjectMeta;
-            
-            // write into cache
-            var account = project.Account;
-            var gitlabClient = _gitlabService.GetGitlabClient(account.HostUrl, account.AuthenticationToken);
-
-            var gitlabProject = await gitlabClient.GetProjectById(project.GitlabProjectId);
-            _jsonCache.WriteProject(gitlabProject.Id, gitlabProject);
-            
-            // read again
-            return _jsonCache.ReadProject(project.GitlabProjectId);
-        }
-        
-        
     }
 }

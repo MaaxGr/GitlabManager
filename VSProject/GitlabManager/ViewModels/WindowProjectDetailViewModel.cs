@@ -14,15 +14,14 @@ namespace GitlabManager.ViewModels
     /// </summary>
     public class WindowProjectDetailViewModel : AppViewModel
     {
+        #region Dependencies
 
-        /*
-         * Dependencies
-         */
         private readonly WindowProjectDetailModel _windowModel;
-        
-        /*
-         * State
-         */
+
+        #endregion
+
+        #region State for View
+
         public string WindowTitle => _windowModel.ProjectNameWithNamespace;
         public string HeaderMainText => _windowModel.ProjectNameWithNamespace;
         public string HeaderTopText => _windowModel.AccountIdentifier;
@@ -42,18 +41,23 @@ namespace GitlabManager.ViewModels
         public Visibility ButtonOpenInVisibility =>
             _windowModel.IsProjectDownloaded ? Visibility.Visible : Visibility.Collapsed;
         
-        
-        /*
-         * Commands
-         */
+        #endregion
+
+        #region Commands in View
+
         public ICommand OpenInBrowserCommand { get; }
         public ICommand CloneProjectCommand { get; }
 
         public ICommand OpenInExplorerCommand { get;  }
         public ICommand OpenInVSCodeCommand { get;  }
-        /*
-         * Constructor
-         */
+
+        #endregion
+        
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="windowModel">Model for Window</param>
         public WindowProjectDetailViewModel(WindowProjectDetailModel windowModel)
         {
             // init dependencies
@@ -68,14 +72,17 @@ namespace GitlabManager.ViewModels
             OpenInVSCodeCommand = new AppDelegateCommand<object>(_ => _windowModel.OpenInApp("vscode"));
         }
 
+        /// <summary>
+        /// init function
+        /// </summary>
+        /// <param name="projectId">internal project id</param>
         public void Init(int projectId)
         {
             _windowModel.Init(projectId);
         }
-        
-        /*
-         * Utilities
-         */
+
+        #region Private Utility Functions
+
         private void ProjectDetailModelPropertyChangedHandler(object sender, PropertyChangedEventArgs eventArgs)
         {
             switch (eventArgs.PropertyName)
@@ -114,5 +121,9 @@ namespace GitlabManager.ViewModels
                     break;
             }
         }
+
+        #endregion
+        
+    
     }
 }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Input;
 using AdonisUI.Controls;
 using GitlabManager.Framework;
 using GitlabManager.Notifications;
 using GitlabManager.Services.Database.Model;
 using GitlabManager.Services.Dialog;
-using GitlabManager.Services.Logging;
 using GitlabManager.Services.WindowOpener;
 
 namespace GitlabManager.ViewModels
@@ -16,15 +14,15 @@ namespace GitlabManager.ViewModels
     /// </summary>
     public class PageAccountsSingleAccountViewModel : AppViewModel
     {
-        /*
-         * Dependencies
-         */
+        #region Dependencies
+
         private IDialogService _dialogService;
         private IWindowOpener _windowOpener;
-        
-        /*
-         * Properties
-         */
+
+        #endregion
+
+        #region Properties for View
+
         public DbAccount StoredAccount { get; set; }
         
         public int Id { get; set; }
@@ -43,6 +41,13 @@ namespace GitlabManager.ViewModels
         
         public ICommand TestTokenCommand { get; }
 
+        #endregion
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="windowOpener">Service to open other windows</param>
+        /// <param name="dialogService">Service to open dialogs</param>
         public PageAccountsSingleAccountViewModel(IWindowOpener windowOpener, IDialogService dialogService)
         {
             // init dependencies
@@ -50,14 +55,15 @@ namespace GitlabManager.ViewModels
             _windowOpener = windowOpener;
             
             // init commands
-            DeleteCommand = new AppDelegateCommand<object>(DeleteCommandExecutor);
-            SaveCommand = new AppDelegateCommand<string>(SaveCommandExecutor);
+            DeleteCommand = new AppDelegateCommand<object>(_ => DeleteCommandExecutor());
+            SaveCommand = new AppDelegateCommand<string>(_ => SaveCommandExecutor());
             TestTokenCommand = new AppDelegateCommand<object>(_ => TestTokenCommandExecutor());
-            
-            dialogService.Test();
         }
 
-        private void DeleteCommandExecutor(Object o)
+        /// <summary>
+        /// Executor that is called on delete button click
+        /// </summary>
+        private void DeleteCommandExecutor()
         {
             var messageBox = new MessageBoxModel
             {
@@ -70,24 +76,31 @@ namespace GitlabManager.ViewModels
 
             if (x == MessageBoxResult.OK)
             {
-                LoggingService.LogD("DELTE Bla");
                 MessengerInstance.Send(new DeleteAccountNotification(StoredAccount));
             }
         }
 
-        private void SaveCommandExecutor(Object o)
+        /// <summary>
+        /// Executor that is called on save button click
+        /// </summary>
+        private void SaveCommandExecutor()
         {
-            LoggingService.LogD($"Save: {Id} {Identifier}");
             PatchAccount();
             MessengerInstance.Send(new SaveAccountNotification(StoredAccount));
         }
 
+        /// <summary>
+        /// Executor that is called, when test button was pressed
+        /// </summary>
         private void TestTokenCommandExecutor()
         {
             _windowOpener.OpenConnectionWindow(HostUrl, AuthenticationToken);
         }
 
-        public void PatchAccount()
+        /// <summary>
+        /// Update stored account properties with properties of view model
+        /// </summary>
+        private void PatchAccount()
         {
             StoredAccount.Identifier = Identifier;
             StoredAccount.Description = Description;
@@ -95,6 +108,11 @@ namespace GitlabManager.ViewModels
             StoredAccount.AuthenticationToken = AuthenticationToken;
         }
 
+        /// <summary>
+        /// Compares the quality of to view models
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object? obj)
         {
             // LoggingService.LogD($"Equality check: {obj} current: {this}");
@@ -107,6 +125,10 @@ namespace GitlabManager.ViewModels
             return false;
         }
 
+        /// <summary>
+        /// String representation of view model
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return $"Account VM {Id}; {Identifier}";

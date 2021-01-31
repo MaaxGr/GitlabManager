@@ -7,10 +7,9 @@ namespace GitlabManager.Theme
     /// </summary>
     public static class ThemeConstants
     {
-        
-        /**
-         * App Colors
-         */
+
+        #region App Colors
+
         public static ComponentResourceKey AccentColor 
             => new ComponentResourceKey(typeof (AdonisUI.Colors), nameof (AccentColor));
         
@@ -22,10 +21,12 @@ namespace GitlabManager.Theme
         
         public static ComponentResourceKey ErrorLightColor
             => new ComponentResourceKey(typeof (ThemeConstants), nameof (ErrorLightColor));
-        
-        /**
-         * App Brushes
-         */
+
+        #endregion
+
+
+        #region App Brushes
+
         public static ComponentResourceKey AccentBrush 
             => new ComponentResourceKey(typeof (AdonisUI.Brushes), nameof (AccentBrush));
         
@@ -37,6 +38,9 @@ namespace GitlabManager.Theme
      
         public static ComponentResourceKey ErrorLightBrush 
             => new ComponentResourceKey(typeof (ThemeConstants), nameof (ErrorLightBrush));
+
+        #endregion
+
         
     }
 }

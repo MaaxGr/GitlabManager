@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System.ComponentModel;
 using GitlabManager.Annotations;
 
 namespace GitlabManager.Framework
@@ -14,6 +12,10 @@ namespace GitlabManager.Framework
         
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Raise a property changed event to listeners
+        /// </summary>
+        /// <param name="propertyName"></param>
         [NotifyPropertyChangedInvocator]
         protected void RaisePropertyChanged(string propertyName = null)
         {

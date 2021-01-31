@@ -15,20 +15,24 @@ namespace GitlabManager.Model
     /// </summary>
     public class WindowProjectDetailModel : AppModel
     {
-        /*
-         * Dependencies
-         */
+        #region Dependencies
+
         private readonly GitlabProjectManager _gitlabProjectManager;
         private readonly ISystemService _systemService;
         private readonly DatabaseService _databaseService;
         private GitlabProjectLoader _gitlabProjectLoader;
 
-        /*
-         * Internal State
-         */
+        #endregion
+
+        #region Private Internal State
+
         private DbProject _dbProject;
         private JsonProject _jsonProject;
 
+        #endregion
+
+        #region Public Properties exposed to ViewModel
+        
         public string ProjectNameWithNamespace => _dbProject.NameWithNamespace;
         public string Description => _dbProject.Description;
         public string AccountIdentifier => _dbProject.Account.Identifier;
@@ -39,12 +43,17 @@ namespace GitlabManager.Model
         public int OpenIssueCount => _jsonProject.OpenIssuesCount;
         public string WebUrl => _jsonProject.WebUrl;
         public List<string> TagList => _jsonProject.TagList;
-
         public bool IsProjectDownloaded => !string.IsNullOrWhiteSpace(_dbProject.LocalFolder);
-        
         public bool ProjectDownloading { get; set; }
         
-
+        #endregion
+        
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="gitlabProjectManager">Service to access gitlab projects</param>
+        /// <param name="systemService">Service to access system functionality</param>
+        /// <param name="databaseService">Service to access database</param>
         public WindowProjectDetailModel(GitlabProjectManager gitlabProjectManager, ISystemService systemService, DatabaseService databaseService)
         {
             _gitlabProjectManager = gitlabProjectManager;
@@ -52,6 +61,12 @@ namespace GitlabManager.Model
             _databaseService = databaseService;
         }
 
+        #region Public Actions
+
+        /// <summary>
+        /// Init ViewModel for projectId
+        /// </summary>
+        /// <param name="projectId">Internal ProjectId (Database) that should be opened</param>
         public async void Init(int projectId)
         {
             _dbProject = _gitlabProjectManager.GetProject(projectId);
@@ -59,33 +74,18 @@ namespace GitlabManager.Model
             _gitlabProjectLoader = new GitlabProjectLoader(new GitlabAccountClientImpl(_dbProject.Account.HostUrl, _dbProject.Account.AuthenticationToken));
             RaiseUpdateProject();
         }
-        
-        private void RaiseUpdateProject()
-        {
-            RaisePropertyChanged(nameof(ProjectNameWithNamespace));
-            RaisePropertyChanged(nameof(Description));
-            RaisePropertyChanged(nameof(AccountIdentifier));
-            RaisePropertyChanged(nameof(CommitCount));
-            RaisePropertyChanged(nameof(GitlabProjectId));
-            RaisePropertyChanged(nameof(TagCount));
-            RaisePropertyChanged(nameof(StarCount));
-            RaisePropertyChanged(nameof(OpenIssueCount));
-            RaisePropertyChanged(nameof(WebUrl));
-            RaisePropertyChanged(nameof(TagList));
-            RaisePropertyChanged(nameof(IsProjectDownloaded));
-        }
 
+        /// <summary>
+        /// Open a project in the web browser
+        /// </summary>
         public void OpenProjectInBrowser()
         {
             _systemService.OpenBrowser(WebUrl);
         }
 
-        public void SetProjectDownloadingStatus(bool downloading)
-        {
-            ProjectDownloading = downloading;
-            RaisePropertyChanged(nameof(ProjectDownloading));
-        }
-
+        /// <summary>
+        /// Clone a Git-project to local directory
+        /// </summary>
         public void CloneProject()
         {
             var folderName = _jsonProject.NameWithNamespace
@@ -103,6 +103,10 @@ namespace GitlabManager.Model
             });
         }
 
+        /// <summary>
+        /// Open project in App
+        /// </summary>
+        /// <param name="appName">Name of app (currently explorer or vscode)</param>
         public void OpenInApp(string appName)
         {
             
@@ -118,6 +122,38 @@ namespace GitlabManager.Model
                     break;
             }
         }
+        
+        #endregion
+
+
+        #region Private Utility Methods
+
+        private void RaiseUpdateProject()
+        {
+            RaisePropertyChanged(nameof(ProjectNameWithNamespace));
+            RaisePropertyChanged(nameof(Description));
+            RaisePropertyChanged(nameof(AccountIdentifier));
+            RaisePropertyChanged(nameof(CommitCount));
+            RaisePropertyChanged(nameof(GitlabProjectId));
+            RaisePropertyChanged(nameof(TagCount));
+            RaisePropertyChanged(nameof(StarCount));
+            RaisePropertyChanged(nameof(OpenIssueCount));
+            RaisePropertyChanged(nameof(WebUrl));
+            RaisePropertyChanged(nameof(TagList));
+            RaisePropertyChanged(nameof(IsProjectDownloaded));
+        }
+        
+        private void SetProjectDownloadingStatus(bool downloading)
+        {
+            ProjectDownloading = downloading;
+            RaisePropertyChanged(nameof(ProjectDownloading));
+        }
+
+        #endregion
+        
+
+
+
         
     }
 }

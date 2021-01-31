@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using GitlabManager.Enums;
 using GitlabManager.Framework;
@@ -12,7 +11,6 @@ using GitlabManager.Services.Database.Model;
 using GitlabManager.Services.DI;
 using GitlabManager.Services.Logging;
 using GitlabManager.Utils;
-using GitlabManager.Views.WindowConnection;
 
 namespace GitlabManager.ViewModels
 {
@@ -21,9 +19,9 @@ namespace GitlabManager.ViewModels
     /// </summary>
     public class PageAccountsViewModel : AppViewModel, IApplicationContentView
     {
-        /*
-         * Page Meta
-         */
+
+        #region Page Meta Data
+
         // Name of page in sidebar
         public string PageName => "Accounts";
 
@@ -39,37 +37,52 @@ namespace GitlabManager.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
 
-        /*
-         * Dependencies
-         */
+        #endregion
+
+        #region Dependencies
+
         private readonly PageAccountsModel _pageModel;
         private readonly IDynamicDependencyProvider _dynamicDependencyProvider;
 
-        /*
-         * Properties
-         */
-        // All available accounts
+        #endregion
+
+        #region Public Properties for View
+
+        /// <summary>
+        /// All available accounts
+        /// </summary>
         public ReadOnlyCollection<PageAccountsSingleAccountViewModel> Accounts =>
             _pageModel.AccountsSorted.Select(CreateAccountViewModel).ToReadonlyCollection();
 
-        // Currently selected account
+        /// <summary>
+        /// Currently selected account in sidebar
+        /// </summary>
         public PageAccountsSingleAccountViewModel SelectedAccountSidebar
         {
             get => FindSelectedViewModelInAccountList();
             set => _pageModel.SetSelectedAccount(value.StoredAccount);
         }
 
+        /// <summary>
+        /// Currently selected account in detail area
+        /// </summary>
         public PageAccountsSingleAccountViewModel SelectedAccountDetail
             => FindSelectedViewModelInAccountList() ?? CreateAccountViewModel(_pageModel.SelectedAccount);
 
-        /*
-         * Commands
-         */
+        
+        /// <summary>
+        /// Command that is executed if NEW-Button was pressed
+        /// </summary>
         public ICommand NewAccountCommand { get; }
 
-        /*
-         * Constructor
-         */
+        #endregion
+        
+        
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="pageModel">Page Model</param>
+        /// <param name="dynamicDependencyProvider">Service get dependencies dynamically</param>
         public PageAccountsViewModel(PageAccountsModel pageModel, IDynamicDependencyProvider dynamicDependencyProvider)
         {
             // init dependencies
@@ -89,9 +102,12 @@ namespace GitlabManager.ViewModels
             );
         }
 
-        /*
-        * View Init Block (on view enter)
-        */
+        #region Public Methods
+        
+        /// <summary>
+        /// Init page
+        /// </summary>
+        /// <returns></returns>
         public Task Init()
         {
             // reload accounts from model
@@ -99,17 +115,20 @@ namespace GitlabManager.ViewModels
             return Task.CompletedTask;
         }
 
-        /*
-         * Commands
-         */
+        /// <summary>
+        /// Pass new account message to model
+        /// </summary>
         private void NewAccountCommandExecutor()
         {
             _pageModel.NewAccount();
         }
+        
+        #endregion
 
-        /*
-         * Utilities
-         */
+
+        #region Private Utility Methods
+
+        
         private void AccountModelPropertyChangedHandler(object sender, PropertyChangedEventArgs eventArgs)
         {
             switch (eventArgs.PropertyName)
@@ -147,10 +166,8 @@ namespace GitlabManager.ViewModels
             return sidebarAccount;
         }
 
-        private void OpenConnectionCheckWindow()
-        {
-            var connectionWindow = _dynamicDependencyProvider.GetInstance<ConnectionWindow>();
-            connectionWindow.Owner = Application.Current.MainWindow;
-        }
+        #endregion
+        
+        
     }
 }

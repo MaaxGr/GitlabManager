@@ -18,9 +18,9 @@ namespace GitlabManager.ViewModels
     public class PageProjectsViewModel
         : AppViewModel, IApplicationContentView
     {
-        /*
-         * Page Meta
-         */
+
+        #region Page Meta data
+
         public string PageName => "Projects";
         public AppNavigationSection Section => AppNavigationSection.Operation;
 
@@ -32,39 +32,62 @@ namespace GitlabManager.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
 
+        #endregion
+
         /*
          * Dependencies
          */
+
+        #region Dependencies
+
         private readonly PageProjectsModel _pageModel;
         private readonly IDynamicDependencyProvider _dynamicDependencyProvider;
 
-        /*
-         * Properties
-         */
-        // list of displayed projects
+        #endregion
+
+
+        #region Public Properties
+
+        /// <summary>
+        /// list of displayed projects
+        /// </summary>
         public List<PageProjectsSingleProjectViewModel> Projects => GetAllProjects();
 
-        // currently selected project
+        /// <summary>
+        /// currently selected project
+        /// </summary>
         public PageProjectsSingleProjectViewModel SelectedProject { get; set; }
-
-        // currently entered search text
+        
+        /// <summary>
+        /// currently entered search text
+        /// </summary>
         public string SearchText
         {
             get => _pageModel.SearchText;
             set => _pageModel.RefreshSearch(value);
         }
 
+        /// <summary>
+        /// currently selected project sorting
+        /// </summary>
         public ProjectListSorting ProjectSorting
         {
             get => _pageModel.SortingMode;
             set => _pageModel.SetSortingMode(value);
         }
 
-        /*
-         * Commands
-         */
+        /// <summary>
+        /// Command that is executed on double-click / enter pressed
+        /// </summary>
         public ICommand EnterPressedCommand { get; }
 
+        #endregion
+        
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="pageModel">Page model</param>
+        /// <param name="dynamicDependencyProvider">Service to resolve dependencies dynamically</param>
         public PageProjectsViewModel(PageProjectsModel pageModel, IDynamicDependencyProvider dynamicDependencyProvider)
         {
             // init dependencies
@@ -75,17 +98,23 @@ namespace GitlabManager.ViewModels
             // init commands
             EnterPressedCommand = new AppDelegateCommand<object>(o => EnterPressedCommandExecutor());
         }
-
+        
+        /// <summary>
+        /// Async method to init page (Loading animation is present, while loading)
+        /// </summary>
+        /// <returns></returns>
         public async Task Init()
         {
             await _pageModel.Init();
         }
 
+        #region Private Utility Methods
 
-        /*
-        * Utilities
-        */
-        // handle property changes from page model
+        /// <summary>
+        /// handle property changes from page model
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void ProjectsModelPropertyChangedHandler(object sender, PropertyChangedEventArgs eventArgs)
         {
             switch (eventArgs.PropertyName)
@@ -97,7 +126,10 @@ namespace GitlabManager.ViewModels
             }
         }
 
-        // get all projects from model and convert them to viewmodel objects
+        /// <summary>
+        /// get all projects from model and convert them to viewmodel objects
+        /// </summary>
+        /// <returns></returns>
         private List<PageProjectsSingleProjectViewModel> GetAllProjects()
         {
             return _pageModel.DisplayedProjectsSorted.Select(modelProject =>
@@ -115,8 +147,12 @@ namespace GitlabManager.ViewModels
 
         private void EnterPressedCommandExecutor()
         {
-            SelectedProject?.OpenProjectDetailWindow();
+            SelectedProject?.OpenProjectDetailWindowExecutor();
         }
+
+
+        #endregion
         
+   
     }
 }

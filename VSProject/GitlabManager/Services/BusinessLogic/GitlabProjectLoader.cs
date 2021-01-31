@@ -12,6 +12,10 @@ namespace GitlabManager.Services.BusinessLogic
     public class GitlabProjectLoader
     {
         private readonly IGitlabAccountClient _gitlabAccountClient;
+        
+        /// <summary>
+        /// Folder where All Gitlab-Projects should be stored
+        /// </summary>
         public readonly string GitlabmanagerDocumentsFolder;
         
         public GitlabProjectLoader(IGitlabAccountClient gitlabAccountClient)
@@ -24,13 +28,14 @@ namespace GitlabManager.Services.BusinessLogic
             CreateDirectoriesIfNotExist();
         }
 
-        private void CreateDirectoriesIfNotExist()
-        {
-            if (!Directory.Exists(GitlabmanagerDocumentsFolder))
-                Directory.CreateDirectory(GitlabmanagerDocumentsFolder);
-            
-        }
+        #region Public Methods
 
+        /// <summary>
+        /// Download a project for a given url to the specified folder
+        /// </summary>
+        /// <param name="httpsCloneUrl">URL to git repository</param>
+        /// <param name="folderName">relative name of local folder where project should be cloned to</param>
+        /// <returns>Whether cloning was successful</returns>
         public async Task<bool> DownloadGitlabProject(string httpsCloneUrl, string folderName)
         {
             var currentGitlabSession = await _gitlabAccountClient.GetCurrentSession();
@@ -47,10 +52,34 @@ namespace GitlabManager.Services.BusinessLogic
             });
         }
 
+        /// <summary>
+        /// Add credentials to http(s) clone url as basic auth, so that no authentication error appears 
+        /// </summary>
+        /// <param name="cloneUrl">HTTP(S) clone url to gitlab project</param>
+        /// <param name="userName">Username of the authenticated user</param>
+        /// <param name="authToken">Private Token of the authenticated user</param>
+        /// <returns></returns>
         public static string IncludeCredentialsInUrl(string cloneUrl, string userName, string authToken)
         {
             var index = cloneUrl.IndexOf("://", StringComparison.Ordinal);
             return cloneUrl.Insert(index + 3, $"{userName}:{authToken}@");
         }
+
+        #endregion
+
+        #region Private Utility Methods
+
+        /// <summary>
+        /// Create a directory if it doesnt exist before
+        /// </summary>
+        private void CreateDirectoriesIfNotExist()
+        {
+            if (!Directory.Exists(GitlabmanagerDocumentsFolder))
+                Directory.CreateDirectory(GitlabmanagerDocumentsFolder);
+            
+        }
+
+        #endregion
+        
     }
 }

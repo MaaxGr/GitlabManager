@@ -8,7 +8,6 @@ using GitlabManager.Framework;
 using GitlabManager.Services.BusinessLogic;
 using GitlabManager.Services.Database;
 using GitlabManager.Services.Database.Model;
-using GitlabManager.Services.Gitlab;
 using GitlabManager.Utils;
 
 namespace GitlabManager.Model
@@ -18,45 +17,63 @@ namespace GitlabManager.Model
     /// </summary>
     public class PageProjectsModel : AppModel
     {
-        /*
-         * Dependencies
-         */
+
+        #region Dependencies
+
         private DatabaseService _databaseService;
-        private IGitlabService _gitlabService;
         private GitlabProjectManager _gitlabProjectManager;
 
-        /*
-         * Internal properties
-         */
-        // all loaded projects
+        #endregion
+
+        #region Internal Properties
+
+        /// <summary>
+        /// List of all available projects
+        /// </summary>
         private List<DbProject> _projects = new List<DbProject>();
 
-        /*
-         * Exposed properties for view model
-         */
-        // all projects that should be displayed
+
+        #endregion
+
+
+        #region Exposed Properties to View Model
+        
+        /// <summary>
+        /// All projects ordered by selected sorting
+        /// </summary>
         public ReadOnlyCollection<DbProject> DisplayedProjectsSorted => GetDisplayedProjects();
 
-        // mode in which the projects get sorted
+        /// <summary>
+        /// Mode in which the projects will be sorted
+        /// </summary>
         public ProjectListSorting SortingMode { get; private set; } = ProjectListSorting.LastActivity;
 
 
-        // currently entered search text
+        /// <summary>
+        /// Currently entered SearchText value
+        /// </summary>
         public string SearchText { get; private set; }
 
-        /*
-         * Constructor
-         */
-        public PageProjectsModel(DatabaseService databaseService, IGitlabService gitlabService, GitlabProjectManager gitlabProjectManager)
+        #endregion
+
+        
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="databaseService">Service to access database</param>
+        /// <param name="gitlabProjectManager">Service to manage gitlab projects</param>
+        public PageProjectsModel(DatabaseService databaseService, GitlabProjectManager gitlabProjectManager)
         {
             _databaseService = databaseService;
-            _gitlabService = gitlabService;
             _gitlabProjectManager = gitlabProjectManager;
         }
 
-        /*
-         * Init function
-         */
+        #region Public Actions
+
+        /// <summary>
+        /// Init function to load all projects
+        /// </summary>
+        /// <returns></returns>
         public async Task Init()
         {
             // clear local cached projects
@@ -74,15 +91,20 @@ namespace GitlabManager.Model
             }
         }
 
-        /*
-         * Commands
-         */
+        /// <summary>
+        /// Refresh the search with a provided search string
+        /// </summary>
+        /// <param name="searchString">String that should be contained in Project Name/Namespace</param>
         public void RefreshSearch(string searchString)
         {
             SearchText = searchString;
             RaiseUpdateList();
         }
-
+        
+        /// <summary>
+        /// Update the sorting mode
+        /// </summary>
+        /// <param name="sorting">Desired sorting mode</param>
         public void SetSortingMode(ProjectListSorting sorting)
         {
             SortingMode = sorting;
@@ -90,9 +112,10 @@ namespace GitlabManager.Model
             RaisePropertyChanged(nameof(SortingMode));
         }
 
-        /*
-         * Utility methods
-         */
+        #endregion
+
+        #region Private Utility Methods
+
         private ReadOnlyCollection<DbProject> GetDisplayedProjects()
         {
             var collectedProjects = new List<DbProject>();
@@ -127,5 +150,7 @@ namespace GitlabManager.Model
         {
             RaisePropertyChanged(nameof(DisplayedProjectsSorted));
         }
+        
+        #endregion
     }
 }

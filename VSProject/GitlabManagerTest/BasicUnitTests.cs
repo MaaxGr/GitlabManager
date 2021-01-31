@@ -1,6 +1,5 @@
 using System;
 using GitlabManager.Services.BusinessLogic;
-using GitlabManager.Services.Gitlab;
 using GitlabManager.Services.Gitlab.Client;
 using Xunit;
 
@@ -9,6 +8,9 @@ namespace GitlabManagerTest
     public class BasicUnitTests
     {
 
+        /// <summary>
+        /// Test the download of gitlab repository (Token applied via environment variable) 
+        /// </summary>
         [Fact]
         public async void TestDownload()
         {
@@ -23,6 +25,9 @@ namespace GitlabManagerTest
             await instance.DownloadGitlabProject("https://gitlab.timolia.de/timolia/TCommon.git", "TCommon");
         }
 
+        /// <summary>
+        /// Test insert include credentials in URL
+        /// </summary>
         [Fact]
         public void InsertIncludeCredentialsInUrl()
         {

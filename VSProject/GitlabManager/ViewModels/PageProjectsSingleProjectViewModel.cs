@@ -11,11 +11,15 @@ namespace GitlabManager.ViewModels
     /// </summary>
     public class PageProjectsSingleProjectViewModel
     {
-        /*
-         * Dependencies
-         */
+
+        #region Dependencies
+
         private IWindowOpener _windowOpener;
 
+        #endregion
+        
+        #region Public Properties
+        
         public DbProject DbProject { get; set; }
 
         public string NameWithNamespace { get; set; }
@@ -28,19 +32,25 @@ namespace GitlabManager.ViewModels
 
         public ICommand ItemDoubleClickCommand { get; }
 
+        #endregion
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="windowOpener">Service to open other windows</param>
         public PageProjectsSingleProjectViewModel(IWindowOpener windowOpener)
         {
             // init dependencies
             _windowOpener = windowOpener;
             
             // init commands
-            ItemDoubleClickCommand = new AppDelegateCommand<object>(_ => OpenProjectDetailWindow());
+            ItemDoubleClickCommand = new AppDelegateCommand<object>(_ => OpenProjectDetailWindowExecutor());
         }
         
-        /*
-         * Actions
-         */
-        public void OpenProjectDetailWindow()
+        /// <summary>
+        /// Executor to open the detail window
+        /// </summary>
+        public void OpenProjectDetailWindowExecutor()
         {
             _windowOpener.OpenProjectDetailWindow(DbProject.Id);
         }

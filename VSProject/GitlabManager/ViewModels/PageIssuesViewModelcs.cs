@@ -12,6 +12,8 @@ namespace GitlabManager.ViewModels
     public class PageIssuesViewModel
         : AppViewModel, IApplicationContentView
     {
+        #region Page Meta data
+
         public string PageName => "Issues";
         public AppNavigationSection Section => AppNavigationSection.Operation;
 
@@ -22,6 +24,10 @@ namespace GitlabManager.ViewModels
             get => _isLoading;
             set => SetProperty(ref _isLoading, value);
         }
+
+        #endregion
+        
+        
         
         public Task Init()
         {

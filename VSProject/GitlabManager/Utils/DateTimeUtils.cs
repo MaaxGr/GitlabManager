@@ -8,23 +8,43 @@ namespace GitlabManager.Utils
     public static class DateTimeUtils
     {
 
+        /// <summary>
+        /// Convert DateTime to ISO 8691 
+        /// </summary>
+        /// <param name="dateTime">DateTime that should be converted</param>
+        /// <returns></returns>
         public static string ToIso8691(this DateTime dateTime)
         {
             return dateTime.ToString("O");
         }
         
+        /// <summary>
+        /// Convert Unix Timestamp Millis to DateTime
+        /// </summary>
+        /// <param name="millis">UNIX Timestamp millis</param>
+        /// <returns></returns>
         public static DateTime UnixMillisToDateTime( double millis )
         {
             return new DateTime(1970,1,1,0,0,0,0, DateTimeKind.Utc)
                 .AddMilliseconds(millis).ToLocalTime();
         }
         
+        /// <summary>
+        /// Convert DateTime to Unix Timestamp millis
+        /// </summary>
+        /// <param name="dateTime">DateTime that should be converted</param>
+        /// <returns></returns>
         public static long ToUnixTimestamp(this DateTime dateTime)
         {
             var unixFirstDate = new DateTime(1970, 1, 1);
             return (long) (dateTime.Subtract(unixFirstDate).TotalSeconds * 1000L);
         }
         
+        /// <summary>
+        /// Convert Unix Millis to human readable timeago format 
+        /// </summary>
+        /// <param name="lastActivityUnixStamp">Millis that should be formatted</param>
+        /// <returns></returns>
         public static string UnixTimestampAgoHumanReadable(long lastActivityUnixStamp)
         {
             var currentUnixStamp = DateTime.Now.ToUnixTimestamp();

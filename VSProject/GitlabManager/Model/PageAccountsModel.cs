@@ -15,34 +15,55 @@ namespace GitlabManager.Model
     /// </summary>
     public class PageAccountsModel : AppModel
     {
-        /*
-         * Dependencies
-         */
+
+        #region Dependenceis
+
         private readonly DatabaseService _databaseService;
-        
-        /*
-         * Properties
-         */
-        // available accounts
+
+        #endregion
+
+        #region Private Variables
+
+        /// <summary>
+        /// Backing field for all stored accounts
+        /// </summary>
         private List<DbAccount> _accounts = new List<DbAccount>();
+   
+        #endregion
+
+        #region Public Properties
+        
+        /// <summary>
+        /// All accounts sorted by Identifier exposed to view model
+        /// </summary>
         public ReadOnlyCollection<DbAccount> AccountsSorted => 
             _accounts.OrderBy(acc => acc.Identifier).ToReadonlyCollection();
-        
-        // currently selected account
+
+        /// <summary>
+        /// Current selected account exposed to view model
+        /// </summary>
         public DbAccount SelectedAccount { get; private set; }
 
-        /**
-         * Constructor
-         */
+        #endregion
+        
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="databaseService">Database Service to access persistence</param>
         public PageAccountsModel(DatabaseService databaseService)
         {
             // init dependencies
             _databaseService = databaseService;
         }
-        
-        /*
-         * Actions
-         */
+
+
+        #region Actions
+
+        /// <summary>
+        /// Init the model
+        /// * loads accounts for database
+        /// * sets selected account to empty
+        /// </summary>
         public void Init()
         {
             // load accounts from db cache
@@ -53,12 +74,20 @@ namespace GitlabManager.Model
             NewAccount();
         }
 
+        /// <summary>
+        /// Executed on NEW-Button click.
+        /// Empty account should be prepared to be saved
+        /// </summary>
         public void NewAccount()
         {
             SelectedAccount = ProvideNewEmptyAccount();
             RaiseSelectedAccountChange();
         }
 
+        /// <summary>
+        /// Set an account the be the currently selected one
+        /// </summary>
+        /// <param name="account">Currently selected accuont</param>
         public void SetSelectedAccount(DbAccount account)
         {
             LoggingService.LogD($"Set 1: {account.Identifier}");
@@ -66,6 +95,10 @@ namespace GitlabManager.Model
             RaiseSelectedAccountChange();
         }
 
+        /// <summary>
+        /// Save an account (update/insert)
+        /// </summary>
+        /// <param name="accountToSave">Account that should be saved</param>
         public void SaveAccount(DbAccount accountToSave)
         {
             // insert if id is 0, else update
@@ -75,11 +108,19 @@ namespace GitlabManager.Model
             }
             else
             {
-                LoggingService.LogD($"Update xx {accountToSave.Identifier}");
                 UpdateAccount(accountToSave);
             }
         }
 
+        #endregion
+
+        #region Private Utility Methods
+
+        /// <summary>
+        /// Add a new account to the database
+        /// (Database operation is done async)
+        /// </summary>
+        /// <param name="accountToAdd"></param>
         private void AddAccount(DbAccount accountToAdd)
         {
             // add entry to local model
@@ -94,7 +135,12 @@ namespace GitlabManager.Model
                 RaiseUpdateList();
             });
         }
-
+        
+        /// <summary>
+        /// Update the handed over account in the database
+        /// (Database operation is done async)
+        /// </summary>
+        /// <param name="accountToUpdate">Account that should be updated</param>
         private void UpdateAccount(DbAccount accountToUpdate)
         {
             // update in local model
@@ -108,6 +154,11 @@ namespace GitlabManager.Model
             Task.Run(() => _databaseService.UpdateAccount(accountToUpdate));
         }
         
+        /// <summary>
+        /// Delete a handed over account in the database
+        /// (Database operation is done async)
+        /// </summary>
+        /// <param name="accountToDelete">Account that should be deleted</param>
         public void DeleteAccount(DbAccount accountToDelete)
         {
             // delete account in model
@@ -119,22 +170,30 @@ namespace GitlabManager.Model
             
             // delete account async in database
             Task.Run(() => _databaseService.DeleteAccount(accountToDelete));
-
-            // logging
-            LoggingService.LogD($"delete account! {accountToDelete.Id}");
         }
         
+        /// <summary>
+        /// Create and return an empty account
+        /// </summary>
+        /// <returns></returns>
         private static DbAccount ProvideNewEmptyAccount()
         {
             var account = new DbAccount {Id = 0};
             return account;
         }
 
-        private void RaiseUpdateList()
-        {
-            RaisePropertyChanged(nameof(AccountsSorted));
-        }
+        /// <summary>
+        /// Raise the change of all available accounts to the view model
+        /// </summary>
+        private void RaiseUpdateList() => RaisePropertyChanged(nameof(AccountsSorted));
 
+        /// <summary>
+        /// Raise a change of the selected account to the view model
+        /// </summary>
         private void RaiseSelectedAccountChange() => RaisePropertyChanged(nameof(SelectedAccount));
+
+        #endregion
+
+
     }
 }

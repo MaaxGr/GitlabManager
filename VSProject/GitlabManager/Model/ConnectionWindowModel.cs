@@ -11,33 +11,45 @@ namespace GitlabManager.Model
     /// </summary>
     public class ConnectionWindowModel : AppModel
     {
-        /*
-         * Dependencies
-         */
+        #region Dependencies
+
         private readonly IGitlabService _gitlabService;
 
-        /*
-         * Input information
-         */
+        #endregion
+
+        #region Private Properties
+
         private string _hostUrl;
         private string _authenticationToken;
 
-        /*
-         * Properties for ViewModel
-         */
+        #endregion
+
+        #region Public Properties for ViewModel
+        
+        /// <summary>
+        /// State of the established connection (Loading/Success/Error)
+        /// </summary>
         public ConnectionState ConnectionState { get; private set; }
 
+        #endregion
+
+        
         public ConnectionWindowModel(IGitlabService gitlabService)
         {
             _gitlabService = gitlabService;
         }
 
+        /// <summary>
+        /// Init the view model with connection credentials
+        /// </summary>
+        /// <param name="hostUrl">Host-URL of the Gitlab Instance (e.g. https://gitlab.com)</param>
+        /// <param name="authenticationToken">Personal Access Token of the User</param>
         public void Init(string hostUrl, string authenticationToken)
         {
             // init variables
             _hostUrl = hostUrl;
             _authenticationToken = authenticationToken;
-            
+
             // test connection
             TryToConnect();
         }
@@ -46,7 +58,7 @@ namespace GitlabManager.Model
         {
             // reset progress
             SetState(ConnectionState.Loading(0));
-            
+
             // prepare cancellation tokens
             var connectionCheckCancellationTokenSource = new CancellationTokenSource();
             var progressReportCancellationTokenSource = new CancellationTokenSource();
@@ -58,7 +70,7 @@ namespace GitlabManager.Model
             {
                 var gitlabClient = _gitlabService.GetGitlabClient(_hostUrl, _authenticationToken);
                 var (success, message) = await gitlabClient.IsConnectionEstablished();
-                    
+
                 SetState(success ? ConnectionState.Success() : ConnectionState.Error(message));
                 progressReportCancellationTokenSource.Cancel();
             }, connectionCheckCancellationToken);
@@ -69,7 +81,7 @@ namespace GitlabManager.Model
             UpdateProgress(60, 3, progressReportCancellationToken);
             UpdateProgress(80, 4, progressReportCancellationToken);
             UpdateProgress(100, 5, progressReportCancellationToken);
-            
+
             // cancel established task
             Task.Delay(5 * 1000, progressReportCancellationToken).ContinueWith(_ =>
             {
@@ -81,10 +93,8 @@ namespace GitlabManager.Model
 
         private void UpdateProgress(int progressValue, int delaySeconds, CancellationToken cancellationToken)
         {
-            Task.Delay(delaySeconds * 1000, cancellationToken).ContinueWith(task =>
-            {
-                SetState(ConnectionState.Loading(progressValue));
-            }, cancellationToken);
+            Task.Delay(delaySeconds * 1000, cancellationToken)
+                .ContinueWith(task => { SetState(ConnectionState.Loading(progressValue)); }, cancellationToken);
         }
 
         private void SetState(ConnectionState connectionState)
@@ -96,15 +106,35 @@ namespace GitlabManager.Model
 
     public class ConnectionState
     {
-        public StateType Type { get; private set;  }
-        public string ErrorMessage { get; private set;  }
-        public int BarProgress { get; private set;  }
+        /// <summary>
+        /// Connection State Type (Loading, Success, Error)
+        /// </summary>
+        public StateType Type { get; private set; }
+        
+        /// <summary>
+        /// Error Message
+        /// </summary>
+        public string ErrorMessage { get; private set; }
+        
+        /// <summary>
+        /// Bar Progress in % (0-100)
+        /// </summary>
+        public int BarProgress { get; private set; }
 
+        /// <summary>
+        /// Connection State Type (Loading, Success, Error)
+        /// </summary>
         public enum StateType
         {
-            Loading, Success, Error
+            Loading,
+            Success,
+            Error
         }
 
+        /// <summary>
+        /// Static utility method to create a Success-State
+        /// </summary>
+        /// <returns>Success connection state</returns>
         public static ConnectionState Success()
         {
             return new ConnectionState
@@ -114,7 +144,12 @@ namespace GitlabManager.Model
                 BarProgress = 100
             };
         }
-        
+
+        /// <summary>
+        /// Static utility method to create a Loading-State
+        /// </summary>
+        /// <param name="progress">Current progress in %</param>
+        /// <returns>Loading connection state</returns>
         public static ConnectionState Loading(int progress)
         {
             return new ConnectionState
@@ -125,6 +160,11 @@ namespace GitlabManager.Model
             };
         }
 
+        /// <summary>
+        /// Static utility method to create a Error-State
+        /// </summary>
+        /// <param name="message">Error Message with description of error</param>
+        /// <returns>Error connection state</returns>
         public static ConnectionState Error(string message)
         {
             return new ConnectionState

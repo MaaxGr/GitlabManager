@@ -7,6 +7,11 @@
     public interface IDynamicDependencyProvider
     {
 
+        /// <summary>
+        /// Get Dependency Instance of specified type T
+        /// </summary>
+        /// <typeparam name="T">Type of instance</typeparam>
+        /// <returns></returns>
         public T GetInstance<T>();
         
     }

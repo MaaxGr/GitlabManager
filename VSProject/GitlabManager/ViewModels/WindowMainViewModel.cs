@@ -8,7 +8,6 @@ using System.Windows.Data;
 using GitlabManager.Enums;
 using GitlabManager.Framework;
 using GitlabManager.Services.Database;
-using GitlabManager.Services.Logging;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GitlabManager.ViewModels
@@ -43,36 +42,26 @@ namespace GitlabManager.ViewModels
 
                 if (value != null && !value.IsLoading)
                 {
-                    LoggingService.LogD("Before load");
                     Task.Run(async () =>
                     {
-                        LoggingService.LogD("before isloading");
                         value.IsLoading = true;
-                        LoggingService.LogD("before isloading 2");
                         try
                         {
                             await value.Init();
-                            LoggingService.LogD("after init 2");
-
                         }
                         catch (Exception e)
                         {
                             Console.WriteLine(e);
                             throw;
                         }
-
-                        LoggingService.LogD("After init");
                     }).ContinueWith(task =>
                     {
-                        LoggingService.LogD("disable loading");
                         value.IsLoading = false;
                     });
 
                 }
 
                 SetProperty(ref _selectedPage, value);
-                LoggingService.LogD($"Group: {SelectedNavigationGroup}");
-                LoggingService.LogD("After raise change");
             }
         }
 

@@ -177,7 +177,7 @@
                       ClipToBounds="True">
                     
                     <ContentControl Content="{Binding SelectedPage, ValidatesOnDataErrors=False, ValidatesOnNotifyDataErrors=False}"
-                                    IsEnabled="{Binding IsReadOnly, Converter={x:Static converters:BoolToInverseBoolConverter.Instance}}"
+                                    IsEnabled="True"
                                     Margin="{adonisUi:Space 1}"/>
 
                     <Grid>

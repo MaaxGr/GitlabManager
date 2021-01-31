@@ -2,10 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GitlabManager.Services.Logging;
 using MVVMLight.Messaging;
 
 namespace GitlabManager.Framework
@@ -78,13 +76,23 @@ namespace GitlabManager.Framework
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
+        /// <summary>
+        /// Raise a change of a property to the view
+        /// </summary>
+        /// <param name="propertyName">Name of property that was updated</param>
         protected void RaisePropertyChanged(string propertyName)
         {
-            LoggingService.LogD($"Handler null? {PropertyChanged == null}");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            Debug.WriteLine("Property Change: " + propertyName);
         }
 
+        /// <summary>
+        /// Update a property and raise change to the view
+        /// </summary>
+        /// <param name="storage">Reference to variable that should be updated</param>
+        /// <param name="value">Value that should be set</param>
+        /// <param name="propertyName">Name of property that should be updated</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(storage, value))

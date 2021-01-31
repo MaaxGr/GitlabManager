@@ -24,6 +24,11 @@ namespace GitlabManager.Framework
             _canExecute = canExecute;
         }
 
+        /// <summary>
+        /// Checks if a command can be executed
+        /// </summary>
+        /// <param name="parameter">Command Parameter with Type T</param>
+        /// <returns></returns>
         public bool CanExecute(object parameter)
         {
             if (_canExecute == null)
@@ -41,6 +46,10 @@ namespace GitlabManager.Framework
             }
         }
 
+        /// <summary>
+        /// Execute the specified command action 
+        /// </summary>
+        /// <param name="parameter"></param>
         public void Execute(object parameter)
         {
             _execute((T) parameter);
