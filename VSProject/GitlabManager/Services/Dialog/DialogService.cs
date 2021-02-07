@@ -9,5 +9,7 @@
 
         public void Test();
 
+        public string SelectFolderDialog(string description);
+
     }
 }

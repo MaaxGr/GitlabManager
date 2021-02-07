@@ -12,7 +12,7 @@ namespace GitlabManager.Framework
     /// Base class of all View-Models
     ///
     /// Inspiration: Adonis UI Demo Template
-    /// https://github.com/benruehl/adonis-ui/blob/master/src/AdonisUI.Demo/Framework/ViewModel.cs
+    /// https://github.com/benruehl/adonis-ui/blob/master/src/AdonisUI.Demo/Framework/ViewModel.cs (#LOC)
     /// => Modified. e.g. added MVVM-Light-Messenger 
     /// </summary>
     /// <see cref="GitlabManager.ViewModels"/>
@@ -55,22 +55,6 @@ namespace GitlabManager.Framework
         private IEnumerable<string> GetAllErrors()
         {
             return _validationErrors.SelectMany(kvp => kvp.Value).Where(e => !String.IsNullOrEmpty(e));
-        }
-
-        // TODO validation methoden aufräumen
-        
-        public void AddValidationError(string propertyName, string errorMessage)
-        {
-            if (!_validationErrors.ContainsKey(propertyName))
-                _validationErrors.Add(propertyName, new List<string>());
-
-            _validationErrors[propertyName].Add(errorMessage);
-        }
-
-        public void ClearValidationErrors(string propertyName)
-        {
-            if (_validationErrors.ContainsKey(propertyName))
-                _validationErrors.Remove(propertyName);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -1,4 +1,5 @@
 ﻿using GitlabManager.Services.Logging;
+using Ookii.Dialogs.Wpf;
 
 namespace GitlabManager.Services.Dialog
 {
@@ -11,6 +12,20 @@ namespace GitlabManager.Services.Dialog
         public void Test()
         {
             LoggingService.LogD("Test Dialog Service");
+        }
+
+        public string SelectFolderDialog(string description)
+        {
+            var dialog = new VistaFolderBrowserDialog
+            {
+                Description = description, UseDescriptionForTitle = true
+            };
+
+            var result = dialog.ShowDialog();
+
+            if (result == null || !(bool) result) return null;
+            
+            return dialog.SelectedPath;
         }
     }
 }

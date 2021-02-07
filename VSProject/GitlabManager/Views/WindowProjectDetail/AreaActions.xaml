@@ -20,9 +20,15 @@
             </Button>
             <Button Foreground="Black" Background="#FFE18B" FontSize="15" 
                     Padding="5" Margin="0,5,0,0"
-                    Command="{ Binding CloneProjectCommand}" 
+                    Command="{ Binding CloneProjectToCustomFolderCommand}" 
                     Visibility="{ Binding ButtonCloneVisibility }" >
-                Clone to Filesystem
+                Clone to custom folder in file system
+            </Button>
+            <Button Foreground="Black" Background="#FFE18B" FontSize="15" 
+                    Padding="5" Margin="0,5,0,0"
+                    Command="{ Binding CloneProjectToDefaultFolderCommand}" 
+                    Visibility="{ Binding ButtonCloneVisibility }" >
+                Clone to default folder in file system
             </Button>
             <Button Foreground="Black" Background="#FFE18B" FontSize="15" 
                     Padding="5" Margin="0,5,0,0"

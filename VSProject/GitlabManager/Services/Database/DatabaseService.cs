@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using GitlabManager.Annotations;
+using GitlabManager.Services.Cache;
 using GitlabManager.Services.Database.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,18 +18,20 @@ namespace GitlabManager.Services.Database
     /// </summary>
     public class DatabaseService
     {
+        private readonly IJsonCache _jsonCache;
 
         private readonly DatabaseContext _context = new DatabaseContext();
 
         public ObservableCollection<DbAccount> Accounts;
         public ObservableCollection<DbProject> Projects;
+        public ObservableCollection<DbSetting> Settings;
 
         /// <summary>
         /// Init database service
         /// </summary>
         public void Init()
         {
-            //_context.Database.EnsureDeleted();
+            //_context.Database.EnsureDeleted(); (TODO: delete)
             CreateProd();
         }
 
@@ -39,9 +43,16 @@ namespace GitlabManager.Services.Database
             _context.Database.EnsureCreated();
             _context.Accounts.Load();
             _context.Projects.Load();
+            _context.Settings.Load();
             
             Accounts = _context.Accounts.Local.ToObservableCollection();
             Projects = _context.Projects.Local.ToObservableCollection();
+            Settings = _context.Settings.Local.ToObservableCollection();
+        }
+
+        public DatabaseService(IJsonCache jsonCache)
+        {
+            _jsonCache = jsonCache;
         }
 
         /// <summary>
@@ -50,7 +61,20 @@ namespace GitlabManager.Services.Database
         /// <param name="account">Account that should be deleted</param>
         public void DeleteAccount(DbAccount account)
         {
+            // remove account cache
+            var projectsToDelete = _context.Projects.Where(tmp => tmp.Account.Id == account.Id);
+            foreach (var dbProject in projectsToDelete)
+            {
+                _jsonCache.DeleteCache(dbProject.Id);
+            }
+
+            // remove account projects
+            _context.Projects.RemoveRange(projectsToDelete);
+
+            // remove account entry
             _context.Accounts.Remove(account);
+            
+            // save changes
             _context.SaveChanges();
         }
 
@@ -160,5 +184,50 @@ namespace GitlabManager.Services.Database
             _context.SaveChanges();
         }
 
+        /// <summary>
+        /// Get setting from database via key
+        /// </summary>
+        /// <param name="key">Name of key in database</param>
+        /// <returns></returns>
+        [CanBeNull]
+        private DbSetting GetSetting(string key)
+        {
+            return Settings.First(s => s.Key == key) ?? null;
+        }
+
+        /// <summary>
+        /// Get settings value string from database via key
+        /// </summary>
+        /// <param name="key">Name of key in database</param>
+        /// <returns></returns>
+        [CanBeNull]
+        public string GetSettingsValue(string key)
+        {
+            return GetSetting(key)?.Value;
+        }
+        
+        /// <summary>
+        /// Write setting value for key into database
+        /// </summary>
+        /// <param name="key">name of key</param>
+        /// <param name="value">new Value</param>
+        public void WriteSettingValue(string key, string value)
+        {
+            var setting = GetSetting(key);
+            if (setting == null)
+            {
+                setting = new DbSetting() {Key = key, Value = value};
+                _context.Settings.Add(setting);
+            }
+            else
+            {
+                setting.Value = value;
+                _context.Settings.Update(setting);
+            }
+
+            _context.SaveChanges();
+        }
+        
+        
     }
 }

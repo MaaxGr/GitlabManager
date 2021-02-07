@@ -19,14 +19,14 @@ namespace GitlabManager.ViewModels
 
         #region Dependencies
 
-        private readonly ConnectionWindowModel _windowModel;
+        private readonly WindowConnectionModel _model;
         private readonly IResources _resources;
 
         #endregion
 
         #region Private Helper properties
 
-        private ConnectionState ConnectionState => _windowModel.ConnectionState;
+        private ConnectionState ConnectionState => _model.ConnectionState;
 
 
         #endregion
@@ -44,12 +44,12 @@ namespace GitlabManager.ViewModels
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="windowModel">Windows Model</param>
+        /// <param name="model">Windows Model</param>
         /// <param name="resources">Resources Loader</param>
-        public WindowConnectionViewModel(ConnectionWindowModel windowModel, IResources resources)
+        public WindowConnectionViewModel(WindowConnectionModel model, IResources resources)
         {
-            _windowModel = windowModel;
-            _windowModel.PropertyChanged += ConnectionWindowModelPropertyChangedHandler;
+            _model = model;
+            _model.PropertyChanged += ConnectionModelPropertyChangedHandler;
             _resources = resources;
         }
 
@@ -60,7 +60,7 @@ namespace GitlabManager.ViewModels
         /// <param name="authenticationToken">privat authentication token</param>
         public void Init(string hostUrl, string authenticationToken)
         {
-            _windowModel.Init(hostUrl, authenticationToken);
+            _model.Init(hostUrl, authenticationToken);
         }
 
 
@@ -71,11 +71,11 @@ namespace GitlabManager.ViewModels
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="eventArgs"></param>
-        private void ConnectionWindowModelPropertyChangedHandler(object sender, PropertyChangedEventArgs eventArgs)
+        private void ConnectionModelPropertyChangedHandler(object sender, PropertyChangedEventArgs eventArgs)
         {
             switch (eventArgs.PropertyName)
             {
-                case nameof(ConnectionWindowModel.ConnectionState):
+                case nameof(WindowConnectionModel.ConnectionState):
                     RaisePropertyChanged(nameof(CurrentProgressBarValue));
                     RaisePropertyChanged(nameof(StateText));
                     RaisePropertyChanged(nameof(ErrorText));

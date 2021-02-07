@@ -3,8 +3,8 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Pages/ProjectList/PageProjects.xaml" />
-        <ResourceDictionary Source="Pages/PageIssues.xaml" />
         <ResourceDictionary Source="Pages/Accounts/PageAccounts.xaml" />
+        <ResourceDictionary Source="Pages/Settings/PageSettings.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

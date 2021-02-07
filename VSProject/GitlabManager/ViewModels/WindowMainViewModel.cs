@@ -15,7 +15,6 @@ namespace GitlabManager.ViewModels
     
     /// <summary>
     /// ViewModel for the entire Main Window that includes multiple pages
-    /// (TODO Probably a lot of that stuff can be simplified or extracted in a model)
     ///
     /// Based on Adonis UI Demo Template (#LOC)
     /// <see cref="https://github.com/benruehl/adonis-ui/blob/master/src/AdonisUI.Demo/ViewModels/ApplicationViewModel.cs"/>
@@ -81,27 +80,6 @@ namespace GitlabManager.ViewModels
             }
         }
 
-        private bool _isReadOnly;
-
-        public bool IsReadOnly
-        {
-            get => _isReadOnly;
-            set => SetProperty(ref _isReadOnly, value);
-        }
-
-        private bool _isDeveloperMode;
-
-        public bool IsDeveloperMode
-        {
-            get => _isDeveloperMode;
-            set
-            {
-                SetProperty(ref _isDeveloperMode, value);
-                PagesCollectionView.Refresh();
-                NavigationGroupsCollectionView.Refresh();
-            }
-        }
-
         private IServiceProvider serviceProvider;
         
         public WindowMainViewModel(IServiceProvider serviceProvider, DatabaseService service)
@@ -128,14 +106,14 @@ namespace GitlabManager.ViewModels
 
         private IEnumerable<IApplicationContentView> CreateAllPages()
         {
+            // yield all page view models here
             yield return serviceProvider.GetRequiredService<PageProjectsViewModel>();
-            yield return new PageIssuesViewModel();
             yield return serviceProvider.GetRequiredService<PageAccountsViewModel>();
+            yield return serviceProvider.GetRequiredService<PageSettingsViewModel>();
         }
 
-        private bool FilterPages(object item)
+        private static bool FilterPages(object item)
         {
-            var page = (IApplicationContentView)item;
             return true;
         }
 
@@ -149,10 +127,8 @@ namespace GitlabManager.ViewModels
             return page.Section == SelectedPage.Section && FilterPages(page);
         }
 
-        private bool FilterNavigationGroups(object item)
+        private static bool FilterNavigationGroups(object item)
         {
-            var group = (AppNavigationSection)item;
-
             return true;
         }
 

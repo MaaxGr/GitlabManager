@@ -1,6 +1,4 @@
-using System;
 using GitlabManager.Services.BusinessLogic;
-using GitlabManager.Services.Gitlab.Client;
 using Xunit;
 
 namespace GitlabManagerTest
@@ -9,29 +7,12 @@ namespace GitlabManagerTest
     {
 
         /// <summary>
-        /// Test the download of gitlab repository (Token applied via environment variable) 
-        /// </summary>
-        [Fact]
-        public async void TestDownload()
-        {
-            var accessToken = Environment.GetEnvironmentVariable("GITLABMANAGER_TEST_ACCESSTOKEN");
-            
-            var gitlabClient = new GitlabAccountClientImpl(
-                "https://gitlab.timolia.de", accessToken
-            );
-
-            var instance = new GitlabProjectLoader(gitlabClient);
-            
-            await instance.DownloadGitlabProject("https://gitlab.timolia.de/timolia/TCommon.git", "TCommon");
-        }
-
-        /// <summary>
         /// Test insert include credentials in URL
         /// </summary>
         [Fact]
         public void InsertIncludeCredentialsInUrl()
         {
-            var newUrl = GitlabProjectLoader.IncludeCredentialsInUrl(
+            var newUrl = GitlabProjectDownloader.IncludeCredentialsInUrl(
                 "https://gitlab.timolia.de/timolia/TCommon.git",
                 "Max", "1234"
                 );

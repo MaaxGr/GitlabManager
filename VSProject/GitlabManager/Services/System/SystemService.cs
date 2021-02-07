@@ -5,7 +5,6 @@ namespace GitlabManager.Services.System
     /// <summary>
     /// Default implementation of <see cref="ISystemService"/>
     /// Calls external applications via Process.Start
-    /// TODO vlt auch #LOC ?
     /// </summary>
     public class SystemService : ISystemService
     {

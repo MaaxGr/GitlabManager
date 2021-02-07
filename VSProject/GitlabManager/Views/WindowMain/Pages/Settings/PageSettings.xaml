@@ -1,0 +1,48 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:GitlabManager.ViewModels"
+                    xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI">
+
+    <DataTemplate DataType="{x:Type viewModels:PageSettingsViewModel}">
+
+        <DockPanel Margin="{ DynamicResource TotalMargin }">
+            <TextBlock DockPanel.Dock="Top" FontWeight="Bold" Text="Settings" FontSize="18" Margin="0,0,0,15" />
+
+            <DockPanel>
+                <!-- Left Area -->
+                <DockPanel>
+                    <StackPanel Orientation="Vertical" Background="#3D3E48">
+                        <StackPanel Orientation="Vertical" Margin="{ DynamicResource TotalMargin2 }">
+                            <TextBlock Text="Default Directory for Git-Projects" FontSize="16" />
+                            <DockPanel LastChildFill="True">
+                                <Button DockPanel.Dock="Right" Margin="10,0,0,0" Command="{ Binding ChangeDefaultProjectsDirectoryCommand }"
+                                        Padding="10" FontSize="16"
+                                        Background="{StaticResource {x:Static adonisUi:Brushes.AccentBrush}}">
+                                    Select Directory
+                                </Button>
+                                
+                                <TextBox
+                                    VerticalContentAlignment="Top"
+                                    TextAlignment="Left"
+                                    TextWrapping="Wrap"
+                                    FontSize="18"
+                                    MinWidth="250"
+                                    IsReadOnly="True"
+                                    Background="#818181"
+                                    Text="{ Binding DefaultProjectsDirectory, Mode=OneWay }"
+                                    BorderThickness="0"
+                                    CaretBrush="White" />
+                            </DockPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                </DockPanel>
+
+            </DockPanel>
+
+        </DockPanel>
+
+
+    </DataTemplate>
+
+</ResourceDictionary>

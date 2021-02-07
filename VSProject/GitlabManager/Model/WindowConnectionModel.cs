@@ -9,7 +9,7 @@ namespace GitlabManager.Model
     /// <summary>
     /// Window that displays, whether user has entered the correct host and auth token for a saved account
     /// </summary>
-    public class ConnectionWindowModel : AppModel
+    public class WindowConnectionModel : AppModel
     {
         #region Dependencies
 
@@ -34,7 +34,7 @@ namespace GitlabManager.Model
         #endregion
 
         
-        public ConnectionWindowModel(IGitlabService gitlabService)
+        public WindowConnectionModel(IGitlabService gitlabService)
         {
             _gitlabService = gitlabService;
         }
@@ -83,9 +83,9 @@ namespace GitlabManager.Model
             UpdateProgress(100, 5, progressReportCancellationToken);
 
             // cancel established task
-            Task.Delay(5 * 1000, progressReportCancellationToken).ContinueWith(_ =>
+            Task.Delay(6 * 1000, progressReportCancellationToken).ContinueWith(_ =>
             {
-                if (connectionCheckTask.IsCompleted) return;
+                if (connectionCheckTask.IsCompletedSuccessfully) return;
                 connectionCheckCancellationTokenSource.Cancel();
                 SetState(ConnectionState.Error("Connection timeout. Valid internet connection?"));
             }, progressReportCancellationToken);

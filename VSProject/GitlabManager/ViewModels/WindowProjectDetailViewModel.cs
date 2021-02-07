@@ -46,7 +46,8 @@ namespace GitlabManager.ViewModels
         #region Commands in View
 
         public ICommand OpenInBrowserCommand { get; }
-        public ICommand CloneProjectCommand { get; }
+        public ICommand CloneProjectToDefaultFolderCommand { get; }
+        public ICommand CloneProjectToCustomFolderCommand { get; }
 
         public ICommand OpenInExplorerCommand { get;  }
         public ICommand OpenInVSCodeCommand { get;  }
@@ -66,7 +67,8 @@ namespace GitlabManager.ViewModels
             
             // init commands
             OpenInBrowserCommand = new AppDelegateCommand<object>(_ => _windowModel.OpenProjectInBrowser());
-            CloneProjectCommand = new AppDelegateCommand<object>(_ => _windowModel.CloneProject());
+            CloneProjectToDefaultFolderCommand = new AppDelegateCommand<object>(_ => _windowModel.CloneProjectToDefaultFolder());
+            CloneProjectToCustomFolderCommand = new AppDelegateCommand<object>(_ => _windowModel.CloneProjectToCustomFolder());
 
             OpenInExplorerCommand = new AppDelegateCommand<object>(_ => _windowModel.OpenInApp("explorer"));
             OpenInVSCodeCommand = new AppDelegateCommand<object>(_ => _windowModel.OpenInApp("vscode"));

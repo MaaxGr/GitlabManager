@@ -34,6 +34,8 @@ namespace GitlabManager.Services.Gitlab.Client
         private string _hostUrl;
         private string _authenticationToken;
 
+        private string _errorMessage;
+        
         private HttpClient _httpClient;
 
         public GitlabAccountClientImpl(string hostUrl, string authenticationToken)
@@ -43,11 +45,20 @@ namespace GitlabManager.Services.Gitlab.Client
             
             LoggingService.LogD($"hosturl '{hostUrl}'");
             LoggingService.LogD($"token '{authenticationToken}'");
-            
-            _client = new GitLabClient(hostUrl, authenticationToken);
-            
-            _httpClient = new HttpClient {BaseAddress = new Uri(_hostUrl)};
-            _httpClient.DefaultRequestHeaders.Add("PRIVATE-TOKEN", _authenticationToken);
+
+            try
+            {
+                _client = new GitLabClient(hostUrl, authenticationToken);
+                _errorMessage = "";
+                
+                _httpClient = new HttpClient {BaseAddress = new Uri(_hostUrl)};
+                _httpClient.DefaultRequestHeaders.Add("PRIVATE-TOKEN", _authenticationToken);
+            }
+            catch (Exception e)
+            {
+                Console.Out.WriteLine(e.Message);
+                _errorMessage = e.Message;
+            }
         }
 
         public async Task<Session> GetCurrentSession()
@@ -59,6 +70,11 @@ namespace GitlabManager.Services.Gitlab.Client
         {
             try
             {
+                if (!string.IsNullOrWhiteSpace(_errorMessage))
+                {
+                    return new Tuple<bool, string>(false, _errorMessage);
+                }
+                
                 var session = await _client.Users.GetCurrentSessionAsync();
 
                 // connection is established, if username of current session in not blank

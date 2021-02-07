@@ -20,5 +20,11 @@ namespace GitlabManager.Services.Cache
         /// <param name="projectId">internal project id</param>
         /// <returns>JsonProject object</returns>
         public JsonProject ReadProject(int projectId);
+
+        /// <summary>
+        /// Delete a cached project
+        /// </summary>
+        /// <param name="projectId">internal project id</param>
+        public void DeleteCache(int projectId);
     }
 }

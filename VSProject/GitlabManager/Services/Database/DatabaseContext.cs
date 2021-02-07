@@ -11,6 +11,7 @@ namespace GitlabManager.Services.Database
     {
         public DbSet<DbAccount> Accounts { get; set; }
         public DbSet<DbProject> Projects { get; set; }
+        public DbSet<DbSetting> Settings { get; set; }
 
         /// <summary>
         /// Configure database file (e.g. database file name)

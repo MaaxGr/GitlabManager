@@ -44,19 +44,34 @@ namespace GitlabManager.Services.Cache
             file.Close();
         }
 
+        public void DeleteCache(int projectId)
+        {
+            var fileName = $"project-{projectId}.json";
+            var filePath = $"{_gitlabManagerCacheFolder}/{fileName}";
+            File.Delete(filePath);
+        }
+
         public JsonProject ReadProject(int projectId)
         {
             var fileName = $"project-{projectId}.json";
             var filePath = $"{_gitlabManagerCacheFolder}/{fileName}";
 
+            // return null if not existing
+            if (!File.Exists(fileName))
+            {
+                return null;
+            }
+            
             try
             {
+                // return deserialized json object 
                 var jsonContent = File.ReadAllText(filePath);
                 return JsonConvert.DeserializeObject<JsonProject>(jsonContent);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                // print error to console and return null
+                LoggingService.LogD(e.ToString());
                 return null;
             }
         }

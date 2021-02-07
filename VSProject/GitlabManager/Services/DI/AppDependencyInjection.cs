@@ -73,6 +73,7 @@ namespace GitlabManager.Services.DI
             _services.AddSingleton<IWindowOpener>(new WindowOpenerImpl(_dynamicDependencyProvider));
             _services.AddSingleton<IResources>(new ResourcesImpl());
             _services.AddSingleton(typeof(GitlabProjectManager));
+            _services.AddSingleton(typeof(GitlabProjectDownloader));
             _services.AddSingleton<IJsonCache>(new JsonCache());
             _services.AddSingleton<ISystemService>(new SystemService());
         }
@@ -91,9 +92,10 @@ namespace GitlabManager.Services.DI
 
             void ConfigureModels()
             {
-                _services.AddTransient(typeof(ConnectionWindowModel));
+                _services.AddTransient(typeof(WindowConnectionModel));
                 _services.AddTransient(typeof(PageAccountsModel));
                 _services.AddTransient(typeof(PageProjectsModel));
+                _services.AddTransient(typeof(PageSettingsModel));
                 _services.AddTransient(typeof(WindowProjectDetailModel));
             }
 
@@ -106,6 +108,7 @@ namespace GitlabManager.Services.DI
                 _services.AddTransient(typeof(WindowConnectionViewModel));
                 _services.AddTransient(typeof(PageProjectsViewModel));
                 _services.AddTransient(typeof(PageProjectsSingleProjectViewModel));
+                _services.AddTransient(typeof(PageSettingsViewModel));
                 _services.AddTransient(typeof(WindowProjectDetailViewModel));
             }
 

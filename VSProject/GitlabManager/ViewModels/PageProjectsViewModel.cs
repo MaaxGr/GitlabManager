@@ -7,7 +7,6 @@ using GitlabManager.Enums;
 using GitlabManager.Framework;
 using GitlabManager.Model;
 using GitlabManager.Services.DI;
-using GitlabManager.Services.Logging;
 using GitlabManager.Utils;
 
 namespace GitlabManager.ViewModels
@@ -120,7 +119,6 @@ namespace GitlabManager.ViewModels
             switch (eventArgs.PropertyName)
             {
                 case nameof(PageProjectsModel.DisplayedProjectsSorted):
-                    LoggingService.LogD("Update projects in vm...");
                     RaisePropertyChanged(nameof(Projects));
                     break;
             }

@@ -93,8 +93,11 @@ namespace GitlabManager.Services.BusinessLogic
         /// <returns>JsonProject with all project metatdata</returns>
         public async Task<JsonProject> GetCachedProjectMeta(DbProject project)
         {
+
+            var globalProjectId = project.Id;
+            
             // read from cache
-            var cachedProjectMeta = _jsonCache.ReadProject(project.GitlabProjectId);
+            var cachedProjectMeta = _jsonCache.ReadProject(globalProjectId);
             
             // return if in cache
             if (cachedProjectMeta != null) 
@@ -105,10 +108,9 @@ namespace GitlabManager.Services.BusinessLogic
             var gitlabClient = _gitlabService.GetGitlabClient(account.HostUrl, account.AuthenticationToken);
 
             var gitlabProject = await gitlabClient.GetProjectById(project.GitlabProjectId);
-            _jsonCache.WriteProject(gitlabProject.Id, gitlabProject);
+            _jsonCache.WriteProject(globalProjectId, gitlabProject);
             
-            // read again
-            return _jsonCache.ReadProject(project.GitlabProjectId);
+            return gitlabProject;
         }
 
         #endregion

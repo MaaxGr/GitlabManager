@@ -9,7 +9,7 @@ namespace GitlabManager.Services.Gitlab.Model
     /// Json Classes for serialization of gitlab api.
     /// Currently only project endpoint is used.
     /// 
-    /// API classes see https://docs.gitlab.com/ee/api/projects.html (#LOC)
+    /// API classes see https://docs.gitlab.com/ee/api/projects.html
     /// Converter see https://json2csharp.com/
     /// </summary>
     public class JsonNamespace    {
