@@ -41,7 +41,7 @@ namespace GitlabManager.Utils
         }
         
         /// <summary>
-        /// Convert Unix Millis to human readable timeago format 
+        /// Convert Unix Millis to human readable time-ago format 
         /// </summary>
         /// <param name="lastActivityUnixStamp">Millis that should be formatted</param>
         /// <returns></returns>

@@ -58,6 +58,7 @@ namespace GitlabManager.Model
         /// <param name="systemService">Service to access system functionality</param>
         /// <param name="databaseService">Service to access database</param>
         /// <param name="gitlabProjectDownloader">Service that cares about downloading git projects</param>
+        /// <param name="dialogService">Service to open dialogs</param>
         public WindowProjectDetailModel(GitlabProjectManager gitlabProjectManager, ISystemService systemService,
             DatabaseService databaseService, GitlabProjectDownloader gitlabProjectDownloader,
             IDialogService dialogService)

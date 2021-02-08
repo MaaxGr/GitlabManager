@@ -20,8 +20,8 @@ namespace GitlabManager.Model
 
         #region Dependencies
 
-        private DatabaseService _databaseService;
-        private GitlabProjectManager _gitlabProjectManager;
+        private readonly DatabaseService _databaseService;
+        private readonly GitlabProjectManager _gitlabProjectManager;
 
         #endregion
 

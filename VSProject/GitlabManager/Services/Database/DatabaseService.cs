@@ -24,7 +24,7 @@ namespace GitlabManager.Services.Database
 
         public ObservableCollection<DbAccount> Accounts;
         public ObservableCollection<DbProject> Projects;
-        public ObservableCollection<DbSetting> Settings;
+        private ObservableCollection<DbSetting> _settings;
 
         /// <summary>
         /// Init database service
@@ -47,7 +47,7 @@ namespace GitlabManager.Services.Database
             
             Accounts = _context.Accounts.Local.ToObservableCollection();
             Projects = _context.Projects.Local.ToObservableCollection();
-            Settings = _context.Settings.Local.ToObservableCollection();
+            _settings = _context.Settings.Local.ToObservableCollection();
         }
 
         public DatabaseService(IJsonCache jsonCache)
@@ -192,7 +192,7 @@ namespace GitlabManager.Services.Database
         [CanBeNull]
         private DbSetting GetSetting(string key)
         {
-            return Settings.First(s => s.Key == key) ?? null;
+            return _settings.First(s => s.Key == key);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace GitlabManager.Services.Database
             var setting = GetSetting(key);
             if (setting == null)
             {
-                setting = new DbSetting() {Key = key, Value = value};
+                setting = new DbSetting {Key = key, Value = value};
                 _context.Settings.Add(setting);
             }
             else

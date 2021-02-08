@@ -4,7 +4,7 @@ using GitlabManager.Services.DI;
 namespace GitlabManager.Views
 {
     /// <summary>
-    /// Codebehind Entrypoint XAML of Project.
+    /// Code-Behind Entrypoint XAML of Project.
     /// Initializes Dependency Injection and launches Main Window
     /// </summary>
     public partial class App : Application

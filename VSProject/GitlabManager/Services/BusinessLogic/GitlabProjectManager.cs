@@ -90,7 +90,7 @@ namespace GitlabManager.Services.BusinessLogic
         /// Get cached metadata (json serialization of gitlab project-endpoint)
         /// </summary>
         /// <param name="project">Database project object</param>
-        /// <returns>JsonProject with all project metatdata</returns>
+        /// <returns>JsonProject with all project metadata</returns>
         public async Task<JsonProject> GetCachedProjectMeta(DbProject project)
         {
 

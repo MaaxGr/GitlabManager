@@ -7,7 +7,6 @@ namespace GitlabManager.Services.Dialog
 {
     /// <summary>
     /// Default implementation of <see cref="IDialogService"/>
-    /// TODO implement
     /// </summary>
     public class DialogServiceImpl : IDialogService
     {
@@ -33,7 +32,7 @@ namespace GitlabManager.Services.Dialog
                 Text = text,
                 Caption = caption,
                 Icon = icon,
-                Buttons = buttons.ToArray(),
+                Buttons = buttons.ToArray()
             };
             return MessageBox.Show(messageBox);
         }
@@ -45,7 +44,7 @@ namespace GitlabManager.Services.Dialog
                 Text = $"Unfortunately an error occurred: {errorMessage}",
                 Caption = "Ups?",
                 Icon = MessageBoxImage.Error,
-                Buttons = new []{ MessageBoxButtons.Ok() },
+                Buttons = new []{ MessageBoxButtons.Ok() }
             };
             MessageBox.Show(messageBox);
         }

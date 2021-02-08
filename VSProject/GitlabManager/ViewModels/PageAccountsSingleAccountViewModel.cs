@@ -100,10 +100,10 @@ namespace GitlabManager.ViewModels
         private void DeleteCommandExecutor()
         {
             var result = _dialogService.ShowMessageBox(
-                text: $"Are you sure that the account '{Identifier}' should be removed?",
-                caption: $"Remove Account: {Identifier}",
-                icon: MessageBoxImage.Question,
-                buttons: MessageBoxButtons.OkCancel()
+                $"Are you sure that the account '{Identifier}' should be removed?",
+                $"Remove Account: {Identifier}",
+                MessageBoxImage.Question,
+                MessageBoxButtons.OkCancel()
             );
 
             if (result == MessageBoxResult.OK)
@@ -154,21 +154,6 @@ namespace GitlabManager.ViewModels
             StoredAccount.Description = Description;
             StoredAccount.HostUrl = HostUrl;
             StoredAccount.AuthenticationToken = AuthenticationToken;
-        }
-
-        /// <summary>
-        /// Compares the quality of to view models
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Equals(object? obj)
-        {
-            if (obj is PageAccountsSingleAccountViewModel vm)
-            {
-                return vm.Id == Id;
-            }
-
-            return false;
         }
 
         /// <summary>

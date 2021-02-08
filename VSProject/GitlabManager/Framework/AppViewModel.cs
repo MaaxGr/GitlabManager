@@ -33,10 +33,7 @@ namespace GitlabManager.Framework
                 if (string.IsNullOrEmpty(propertyName))
                     return Error;
 
-                if (_validationErrors.ContainsKey(propertyName))
-                    return string.Join(Environment.NewLine, _validationErrors[propertyName]);
-
-                return string.Empty;
+                return _validationErrors.ContainsKey(propertyName) ? string.Join(Environment.NewLine, _validationErrors[propertyName]) : string.Empty;
             }
         }
 
@@ -54,7 +51,7 @@ namespace GitlabManager.Framework
 
         private IEnumerable<string> GetAllErrors()
         {
-            return _validationErrors.SelectMany(kvp => kvp.Value).Where(e => !String.IsNullOrEmpty(e));
+            return _validationErrors.SelectMany(kvp => kvp.Value).Where(e => !string.IsNullOrEmpty(e));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

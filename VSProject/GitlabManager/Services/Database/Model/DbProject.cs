@@ -50,7 +50,7 @@ namespace GitlabManager.Services.Database.Model
         public bool Stared { get; set; }
         
         /// <summary>
-        /// Timestamp when user changed star (feature comming in later version)
+        /// Timestamp when user changed star (feature coming in later version)
         /// </summary>
         public long StaredChangeSaved { get; set; }
         

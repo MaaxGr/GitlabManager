@@ -53,15 +53,16 @@ namespace GitlabManager.ViewModels
         public ICommand CloneProjectToCustomFolderCommand { get; }
 
         public ICommand OpenInExplorerCommand { get;  }
-        public ICommand OpenInVSCodeCommand { get;  }
+        public ICommand OpenInVsCodeCommand { get;  }
 
         #endregion
-        
+
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="windowModel">Model for Window</param>
+        /// <param name="dialogService">Service to open dialogs</param>
         public WindowProjectDetailViewModel(WindowProjectDetailModel windowModel, IDialogService dialogService)
         {
             // init dependencies
@@ -75,7 +76,7 @@ namespace GitlabManager.ViewModels
             CloneProjectToCustomFolderCommand = new AppDelegateCommand<object>(_ => CloneProjectToCustomFolderCommandExecutor());
 
             OpenInExplorerCommand = new AppDelegateCommand<object>(_ => OpenInExplorerCommandExecutor());
-            OpenInVSCodeCommand = new AppDelegateCommand<object>(_ => OpenInVsCodeCommandExecutor());
+            OpenInVsCodeCommand = new AppDelegateCommand<object>(_ => OpenInVsCodeCommandExecutor());
         }
 
         /// <summary>

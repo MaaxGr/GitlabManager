@@ -87,7 +87,7 @@ namespace GitlabManager.Services.BusinessLogic
             
             var urlWithCredentials = IncludeCredentialsInUrl(httpsCloneUrl, username, accessToken);
 
-            // reclone, if folder already exist  
+            // re-clone, if folder already exist  
             if (Directory.Exists(folderPath))
             {
                 Directory.Delete(folderPath);

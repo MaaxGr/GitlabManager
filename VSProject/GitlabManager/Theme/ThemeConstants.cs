@@ -30,9 +30,6 @@ namespace GitlabManager.Theme
         
         #region App Colors
 
-        public static ComponentResourceKey AccentColor 
-            => new ComponentResourceKey(typeof (AdonisUI.Colors), nameof (AccentColor));
-        
         public static ComponentResourceKey AccentLightColor
             => new ComponentResourceKey(typeof (AdonisUI.Brushes), nameof (AccentLightColor));
         

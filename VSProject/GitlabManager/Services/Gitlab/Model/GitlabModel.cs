@@ -318,7 +318,7 @@ namespace GitlabManager.Services.Gitlab.Model
         public string AutoDevopsDeployStrategy { get; set; } 
 
         [JsonProperty("autoclose_referenced_issues")]
-        public bool AutocloseReferencedIssues { get; set; } 
+        public bool AutoCloseReferencedIssues { get; set; } 
 
         [JsonProperty("repository_storage")]
         public string RepositoryStorage { get; set; } 

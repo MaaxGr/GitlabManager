@@ -40,10 +40,8 @@ namespace GitlabManager.Framework
             {
                 return _canExecute(castedParameter);
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         /// <summary>
@@ -53,11 +51,6 @@ namespace GitlabManager.Framework
         public void Execute(object parameter)
         {
             _execute((T) parameter);
-        }
-
-        public void RaiseCanExecuteChanged()
-        {
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public event EventHandler CanExecuteChanged;

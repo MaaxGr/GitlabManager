@@ -86,7 +86,7 @@ namespace GitlabManager.Model
         /// <summary>
         /// Set an account the be the currently selected one
         /// </summary>
-        /// <param name="account">Currently selected accuont</param>
+        /// <param name="account">Currently selected account</param>
         public void SetSelectedAccount(DbAccount account)
         {
             SelectedAccount = account;

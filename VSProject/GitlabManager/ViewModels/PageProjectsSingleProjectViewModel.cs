@@ -14,7 +14,7 @@ namespace GitlabManager.ViewModels
 
         #region Dependencies
 
-        private IWindowOpener _windowOpener;
+        private readonly IWindowOpener _windowOpener;
 
         #endregion
         

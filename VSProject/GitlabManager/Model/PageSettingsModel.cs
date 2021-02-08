@@ -12,7 +12,7 @@ namespace GitlabManager.Model
     {
         #region Dependencies
 
-        private GitlabProjectDownloader _gitlabProjectDownloader;
+        private readonly GitlabProjectDownloader _gitlabProjectDownloader;
         private readonly IDialogService _dialogService;
 
         #endregion
@@ -61,7 +61,7 @@ namespace GitlabManager.Model
         public void ChangeDefaultGitDirectory()
         {
             var selectedFolder = _dialogService.SelectFolderDialog(
-                description: "Folder in which your git projects will be downloaded"
+                "Folder in which your git projects will be downloaded"
             );
 
             CurrentDirectory = selectedFolder;

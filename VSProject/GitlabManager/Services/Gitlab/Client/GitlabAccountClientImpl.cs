@@ -22,24 +22,22 @@ namespace GitlabManager.Services.Gitlab.Client
     /// Unfortunately there are two problems with the library  
     /// * Projects can't be serialized (circular dependency)
     /// * A issue in the library which leads to crash on particular projects (overflow of the registry-size variable)
-    ///   (Issue just openend: <see cref="https://github.com/nmklotas/GitLabApiClient/issues/203"/> 
+    ///   (Issue just opened: <see href="https://github.com/nmklotas/GitLabApiClient/issues/203"/> 
     ///
     /// Link to the used library
-    /// <see cref="https://github.com/nmklotas/GitLabApiClient"/>
+    /// <see href="https://github.com/nmklotas/GitLabApiClient"/>
     /// </summary>
     public class GitlabAccountClientImpl : IGitlabAccountClient
     {
         private readonly GitLabClient _client;
-        private string _hostUrl;
-        private string _authenticationToken;
+        private readonly string _authenticationToken;
 
-        private string _errorMessage;
+        private readonly string _errorMessage;
         
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
         public GitlabAccountClientImpl(string hostUrl, string authenticationToken)
         {
-            _hostUrl = hostUrl;
             _authenticationToken = authenticationToken;
             
             try
@@ -47,7 +45,7 @@ namespace GitlabManager.Services.Gitlab.Client
                 _client = new GitLabClient(hostUrl, authenticationToken);
                 _errorMessage = "";
                 
-                _httpClient = new HttpClient {BaseAddress = new Uri(_hostUrl)};
+                _httpClient = new HttpClient {BaseAddress = new Uri(hostUrl)};
                 _httpClient.DefaultRequestHeaders.Add("PRIVATE-TOKEN", _authenticationToken);
             }
             catch (Exception e)

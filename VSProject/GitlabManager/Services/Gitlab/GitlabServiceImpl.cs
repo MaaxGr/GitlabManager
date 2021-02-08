@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using GitLabApiClient;
-using GitLabApiClient.Models.Projects.Responses;
-using GitlabManager.Services.Gitlab.Client;
+﻿using GitlabManager.Services.Gitlab.Client;
 
 namespace GitlabManager.Services.Gitlab
 {
