@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System;
 using System.Windows.Input;
 using AdonisUI.Controls;
 using GitlabManager.Framework;
@@ -16,29 +16,63 @@ namespace GitlabManager.ViewModels
     {
         #region Dependencies
 
-        private IDialogService _dialogService;
-        private IWindowOpener _windowOpener;
+        /// <summary>
+        /// Service to open dialogs
+        /// </summary>
+        private readonly IDialogService _dialogService;
+        
+        /// <summary>
+        /// Service to open other windows
+        /// </summary>
+        private readonly IWindowOpener _windowOpener;
 
         #endregion
 
         #region Properties for View
-
-        public DbAccount StoredAccount { get; set; }
         
+        /// <summary>
+        /// Currently stored model account
+        /// </summary>
+        public DbAccount StoredAccount { get; set; }
+
+        /// <summary>
+        /// Id of account
+        /// </summary>
         public int Id { get; set; }
 
+        /// <summary>
+        /// Current Identifier Text-Input value
+        /// </summary>
         public string Identifier { get; set; }
-        
-        public string Description { get; set;  }
-        
+
+        /// <summary>
+        /// Current Description Text-Input  value
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Current HostURL Text-Input  value
+        /// </summary>
         public string HostUrl { get; set; }
-        
+
+        /// <summary>
+        /// Current AuthenticationToken Text-Input  value
+        /// </summary>
         public string AuthenticationToken { get; set; }
         
+        /// <summary>
+        /// Command that is called on delete account button click
+        /// </summary>
         public ICommand DeleteCommand { get; }
-        
-        public ICommand SaveCommand { get;  }
-        
+
+        /// <summary>
+        /// Command that is called on save account button click
+        /// </summary>
+        public ICommand SaveCommand { get; }
+
+        /// <summary>
+        /// Command that is called on test connection button click
+        /// </summary>
         public ICommand TestTokenCommand { get; }
 
         #endregion
@@ -53,7 +87,7 @@ namespace GitlabManager.ViewModels
             // init dependencies
             _dialogService = dialogService;
             _windowOpener = windowOpener;
-            
+
             // init commands
             DeleteCommand = new AppDelegateCommand<object>(_ => DeleteCommandExecutor());
             SaveCommand = new AppDelegateCommand<string>(_ => SaveCommandExecutor());
@@ -65,16 +99,14 @@ namespace GitlabManager.ViewModels
         /// </summary>
         private void DeleteCommandExecutor()
         {
-            var messageBox = new MessageBoxModel
-            {
-                Text = $"Are you sure that the account '{Identifier}' should be removed?",
-                Caption = $"Remove Account: {Identifier}",
-                Icon = MessageBoxImage.Question,
-                Buttons = MessageBoxButtons.OkCancel().ToArray(),
-            };
-            var x = MessageBox.Show(messageBox);
+            var result = _dialogService.ShowMessageBox(
+                text: $"Are you sure that the account '{Identifier}' should be removed?",
+                caption: $"Remove Account: {Identifier}",
+                icon: MessageBoxImage.Question,
+                buttons: MessageBoxButtons.OkCancel()
+            );
 
-            if (x == MessageBoxResult.OK)
+            if (result == MessageBoxResult.OK)
             {
                 MessengerInstance.Send(new DeleteAccountNotification(StoredAccount));
             }
@@ -85,8 +117,16 @@ namespace GitlabManager.ViewModels
         /// </summary>
         private void SaveCommandExecutor()
         {
-            PatchAccount();
-            MessengerInstance.Send(new SaveAccountNotification(StoredAccount));
+            try
+            {
+                PatchAccount();
+                MessengerInstance.Send(new SaveAccountNotification(StoredAccount));
+            }
+            catch (Exception e)
+            {
+                _dialogService.ShowErrorBox(e.Message);
+                Console.WriteLine(e);
+            }
         }
 
         /// <summary>
@@ -94,7 +134,15 @@ namespace GitlabManager.ViewModels
         /// </summary>
         private void TestTokenCommandExecutor()
         {
-            _windowOpener.OpenConnectionWindow(HostUrl, AuthenticationToken);
+            try
+            {
+                _windowOpener.OpenConnectionWindow(HostUrl, AuthenticationToken);
+            }
+            catch (Exception e)
+            {
+                _dialogService.ShowErrorBox(e.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -115,8 +163,6 @@ namespace GitlabManager.ViewModels
         /// <returns></returns>
         public override bool Equals(object? obj)
         {
-            // LoggingService.LogD($"Equality check: {obj} current: {this}");
-            
             if (obj is PageAccountsSingleAccountViewModel vm)
             {
                 return vm.Id == Id;

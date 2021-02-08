@@ -4,12 +4,13 @@
                     xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
                     xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
                     xmlns:system="clr-namespace:System;assembly=System.Runtime"
+                    xmlns:theme="clr-namespace:GitlabManager.Theme"
                     xmlns:accounts1="clr-namespace:GitlabManager.Views.WindowMain.Pages.Accounts">
     
     <DataTemplate DataType="{x:Type viewModels:PageAccountsViewModel}">
         
         <DockPanel Margin="{ DynamicResource TotalMargin }">
-            <TextBlock DockPanel.Dock="Top" FontWeight="Bold" Text="Accounts" FontSize="18" Margin="0,0,0,15" />
+            <TextBlock DockPanel.Dock="Top" FontWeight="Bold" Text="Accounts" FontSize="{StaticResource {x:Static theme:ThemeConstants.PageHeaderFontSize }}" Margin="0,0,0,15" />
             
             <Grid VerticalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
@@ -21,11 +22,11 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 
-                <StackPanel Grid.Column="0" Background="#3D3E48">
+                <StackPanel Grid.Column="0" Background="{StaticResource {x:Static theme:ThemeConstants.WidgetBackgroundBrush }}">
                     <accounts1:AccountList DataContext="{Binding}" />
                 </StackPanel>
                 
-                <StackPanel  Grid.Column="2" Background="#3D3E48">
+                <StackPanel  Grid.Column="2" Background="{StaticResource {x:Static theme:ThemeConstants.WidgetBackgroundBrush }}">
                     <accounts1:AccountDetail DataContext="{Binding SelectedAccountDetail }" />
                 </StackPanel>
                 

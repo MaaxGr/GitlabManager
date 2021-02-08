@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using GitlabManager.Framework;
 using GitlabManager.Model;
+using GitlabManager.Services.Dialog;
 
 namespace GitlabManager.ViewModels
 {
@@ -17,6 +19,7 @@ namespace GitlabManager.ViewModels
         #region Dependencies
 
         private readonly WindowProjectDetailModel _windowModel;
+        private readonly IDialogService _dialogService;
 
         #endregion
 
@@ -59,19 +62,20 @@ namespace GitlabManager.ViewModels
         /// Constructor
         /// </summary>
         /// <param name="windowModel">Model for Window</param>
-        public WindowProjectDetailViewModel(WindowProjectDetailModel windowModel)
+        public WindowProjectDetailViewModel(WindowProjectDetailModel windowModel, IDialogService dialogService)
         {
             // init dependencies
+            _dialogService = dialogService;
             _windowModel = windowModel;
             _windowModel.PropertyChanged += ProjectDetailModelPropertyChangedHandler;
             
             // init commands
-            OpenInBrowserCommand = new AppDelegateCommand<object>(_ => _windowModel.OpenProjectInBrowser());
-            CloneProjectToDefaultFolderCommand = new AppDelegateCommand<object>(_ => _windowModel.CloneProjectToDefaultFolder());
-            CloneProjectToCustomFolderCommand = new AppDelegateCommand<object>(_ => _windowModel.CloneProjectToCustomFolder());
+            OpenInBrowserCommand = new AppDelegateCommand<object>(_ => OpenInBrowserCommandExecutor());
+            CloneProjectToDefaultFolderCommand = new AppDelegateCommand<object>(_ => CloneProjectToDefaultFolderExecutor());
+            CloneProjectToCustomFolderCommand = new AppDelegateCommand<object>(_ => CloneProjectToCustomFolderCommandExecutor());
 
-            OpenInExplorerCommand = new AppDelegateCommand<object>(_ => _windowModel.OpenInApp("explorer"));
-            OpenInVSCodeCommand = new AppDelegateCommand<object>(_ => _windowModel.OpenInApp("vscode"));
+            OpenInExplorerCommand = new AppDelegateCommand<object>(_ => OpenInExplorerCommandExecutor());
+            OpenInVSCodeCommand = new AppDelegateCommand<object>(_ => OpenInVsCodeCommandExecutor());
         }
 
         /// <summary>
@@ -84,6 +88,74 @@ namespace GitlabManager.ViewModels
         }
 
         #region Private Utility Functions
+
+        private void OpenInBrowserCommandExecutor()
+        {
+            try
+            {
+                _dialogService.ShowErrorBox("das ist ein test");
+                _windowModel.OpenProjectInBrowser();
+            }
+            catch (Exception e)
+            {
+                _dialogService.ShowErrorBox(e.Message);
+                Console.WriteLine(e);
+            }
+        }
+
+        private void CloneProjectToDefaultFolderExecutor()
+        {
+            try
+            {
+                _windowModel.CloneProjectToDefaultFolder();
+            }
+            catch (Exception e)
+            {
+                _dialogService.ShowErrorBox(e.Message);
+                Console.WriteLine(e);
+            }
+        }
+
+        private void CloneProjectToCustomFolderCommandExecutor()
+        {
+            try
+            {
+                _windowModel.CloneProjectToCustomFolder();
+            }
+            catch (Exception e)
+            {
+                _dialogService.ShowErrorBox(e.Message);
+                Console.WriteLine(e);
+            }
+        }
+
+        private void OpenInExplorerCommandExecutor()
+        {
+            try
+            {
+                _windowModel.OpenInApp("explorer");
+            }
+            catch (Exception e)
+            {
+                _dialogService.ShowErrorBox(e.Message);
+                Console.WriteLine(e);
+            }
+        }
+
+        private void OpenInVsCodeCommandExecutor()
+        {
+            try
+            {
+                _windowModel.OpenInApp("vscode");
+            }
+            catch (Exception e)
+            {
+                _dialogService.ShowErrorBox(e.Message);
+                Console.WriteLine(e);
+            }
+        }
+        
+        
 
         private void ProjectDetailModelPropertyChangedHandler(object sender, PropertyChangedEventArgs eventArgs)
         {

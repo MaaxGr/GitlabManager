@@ -2,26 +2,27 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewModels="clr-namespace:GitlabManager.ViewModels"
                     xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
-                    xmlns:projectList="clr-namespace:GitlabManager.Views.WindowMain.Pages.ProjectList">
+                    xmlns:projectList="clr-namespace:GitlabManager.Views.WindowMain.Pages.ProjectList"
+                    xmlns:theme="clr-namespace:GitlabManager.Theme">
     
     <DataTemplate DataType="{x:Type viewModels:PageProjectsViewModel}">
         
         <DockPanel Margin="{ DynamicResource TotalMargin }">
-            <TextBlock DockPanel.Dock="Top" FontWeight="Bold" Text="Projects" FontSize="18" Margin="0,0,0,15" />
+            <TextBlock DockPanel.Dock="Top" FontWeight="Bold" Text="Projects" FontSize="{StaticResource {x:Static theme:ThemeConstants.PageHeaderFontSize }}" Margin="0,0,0,15" />
             
             <DockPanel>
                 
                 <!-- Right Area -->
                 <StackPanel Width="300" DockPanel.Dock="Right" Orientation="Vertical">
-                    <projectList:AreaSettings Background="#3D3E48" />
+                    <projectList:AreaSettings Background="{StaticResource {x:Static theme:ThemeConstants.WidgetBackgroundBrush }}" />
                 </StackPanel>
                 
                 <!-- Left Area -->
                 <DockPanel Margin="0,0,20,0">
-                    <projectList:AreaSearch DockPanel.Dock="Top" Background="#3D3E48" Margin="0,0,0,20" />
+                    <projectList:AreaSearch DockPanel.Dock="Top" Background="{StaticResource {x:Static theme:ThemeConstants.WidgetBackgroundBrush }}" Margin="0,0,0,20" />
                     
                     <ScrollViewer>
-                        <projectList:AreaProjectlist Background="#3D3E48" />
+                        <projectList:AreaProjectlist Background="{StaticResource {x:Static theme:ThemeConstants.WidgetBackgroundBrush }}" />
                     </ScrollViewer>
 
                 </DockPanel>

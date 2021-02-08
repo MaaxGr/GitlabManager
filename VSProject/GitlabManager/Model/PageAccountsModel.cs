@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using GitlabManager.Framework;
 using GitlabManager.Services.Database;
 using GitlabManager.Services.Database.Model;
-using GitlabManager.Services.Logging;
 using GitlabManager.Utils;
 
 namespace GitlabManager.Model
@@ -90,7 +89,6 @@ namespace GitlabManager.Model
         /// <param name="account">Currently selected accuont</param>
         public void SetSelectedAccount(DbAccount account)
         {
-            LoggingService.LogD($"Set 1: {account.Identifier}");
             SelectedAccount = account;
             RaiseSelectedAccountChange();
         }
@@ -148,7 +146,6 @@ namespace GitlabManager.Model
             _accounts.UpdateWhere(account => account.Id == accountToUpdate.Id, accountToUpdate);
 
             RaiseUpdateList();
-            LoggingService.LogD("After update raise");
 
             // update in database
             Task.Run(() => _databaseService.UpdateAccount(accountToUpdate));

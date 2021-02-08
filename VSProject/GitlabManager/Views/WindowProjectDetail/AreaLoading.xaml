@@ -8,10 +8,11 @@
              d:DesignHeight="300" d:DesignWidth="300"
              xmlns:viewmodels="clr-namespace:GitlabManager.ViewModels"
              xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             xmlns:theme="clr-namespace:GitlabManager.Theme"
              d:DataContext="{d:DesignInstance viewmodels:WindowProjectDetailViewModel, IsDesignTimeCreatable=True}">
     
-    <StackPanel Orientation="Vertical" Background="#3D3E48">
-        <StackPanel Margin="10">
+    <StackPanel Orientation="Vertical" Background="{StaticResource {x:Static theme:ThemeConstants.WidgetBackgroundBrush }}">
+        <StackPanel Margin="{StaticResource {x:Static theme:ThemeConstants.WidgetInnerThickness }}">
             <TextBlock FontSize="15" Foreground="LightGray" Text="Clone Project" />
             
             <ProgressBar

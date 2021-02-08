@@ -9,10 +9,11 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              xmlns:viewmodels="clr-namespace:GitlabManager.ViewModels"
+             xmlns:theme="clr-namespace:GitlabManager.Theme"
              d:DataContext="{d:DesignInstance viewmodels:PageProjectsViewModel, IsDesignTimeCreatable=True}"
              >
 
-    <StackPanel Margin="10">
+    <StackPanel Margin="{StaticResource {x:Static theme:ThemeConstants.WidgetInnerThickness }}">
         <TextBlock FontSize="16">Settings</TextBlock>
 
         <TextBlock FontSize="14" Foreground="LightGray" Margin="0,20,0,0">Sorting:</TextBlock>

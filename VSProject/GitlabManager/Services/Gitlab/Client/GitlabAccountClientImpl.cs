@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using GitLabApiClient;
 using GitLabApiClient.Models.Users.Responses;
 using GitlabManager.Services.Gitlab.Model;
-using GitlabManager.Services.Logging;
 using GitlabManager.Utils;
 using Newtonsoft.Json;
 
@@ -43,9 +42,6 @@ namespace GitlabManager.Services.Gitlab.Client
             _hostUrl = hostUrl;
             _authenticationToken = authenticationToken;
             
-            LoggingService.LogD($"hosturl '{hostUrl}'");
-            LoggingService.LogD($"token '{authenticationToken}'");
-
             try
             {
                 _client = new GitLabClient(hostUrl, authenticationToken);

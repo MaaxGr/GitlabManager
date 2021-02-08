@@ -10,8 +10,8 @@
              d:DataContext="{d:DesignInstance viewmodels:PageProjectsViewModel, IsDesignTimeCreatable=True}">
 
 
-    <StackPanel Margin="10" VerticalAlignment="Stretch">
-        <TextBlock FontSize="16" Margin="0,0,0,20">Projectlist</TextBlock>
+    <StackPanel Margin="{StaticResource {x:Static theme:ThemeConstants.WidgetInnerThickness }}" VerticalAlignment="Stretch">
+        <TextBlock FontSize="16" Margin="0,0,0,0">Projectlist</TextBlock>
 
         <ListBox
             ItemsSource="{Binding Projects, Mode=OneWay}"
@@ -49,7 +49,7 @@
                                     <DataTrigger
                                         Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
                                         Value="True">
-                                        <Setter Property="BorderBrush" Value="Red" />
+                                        <Setter Property="BorderBrush" Value="{StaticResource {x:Static theme:ThemeConstants.AccentBrush}}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

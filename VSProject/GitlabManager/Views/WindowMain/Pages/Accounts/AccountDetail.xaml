@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:GitlabManager.ViewModels"
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             xmlns:theme="clr-namespace:GitlabManager.Theme"
+             xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -20,17 +22,18 @@
             </Grid.RowDefinitions>
 
             <!-- Top Left -->
-            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" Margin="{ DynamicResource TotalMargin2 }">
+            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical"
+                        Margin="{ DynamicResource TotalMargin2 }">
                 <TextBlock Text="Identifier" FontSize="16" />
                 <StackPanel Orientation="Vertical">
-                    <TextBox 
-                        TextAlignment="Left" 
-                        TextWrapping="Wrap" 
-                        FontSize="18" 
-                        Background="#818181" 
-                        Text="{Binding Identifier, Mode=TwoWay }" 
-                        BorderThickness="0" 
-                        CaretBrush="White"/>
+                    <TextBox
+                        TextAlignment="Left"
+                        TextWrapping="Wrap"
+                        FontSize="18"
+                        Background="#818181"
+                        Text="{Binding Identifier, Mode=TwoWay }"
+                        BorderThickness="0"
+                        CaretBrush="White" />
                 </StackPanel>
             </StackPanel>
 
@@ -38,15 +41,15 @@
             <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" Margin="{ DynamicResource TotalMargin2 }">
                 <TextBlock Text="Description" FontSize="16" />
                 <StackPanel Orientation="Vertical">
-                    <TextBox 
+                    <TextBox
                         VerticalContentAlignment="Top"
-                        TextAlignment="Left" 
+                        TextAlignment="Left"
                         TextWrapping="Wrap" Height="100"
-                        FontSize="18" 
-                        Background="#818181" 
-                        Text="{ Binding Description }" 
-                        BorderThickness="0" 
-                        CaretBrush="White"/>
+                        FontSize="18"
+                        Background="#818181"
+                        Text="{ Binding Description }"
+                        BorderThickness="0"
+                        CaretBrush="White" />
                 </StackPanel>
             </StackPanel>
 
@@ -54,14 +57,14 @@
             <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical" Margin="{ DynamicResource TotalMargin2 }">
                 <TextBlock Text="URL" FontSize="16" />
                 <StackPanel Orientation="Vertical">
-                    <TextBox 
-                        TextAlignment="Left" 
-                        TextWrapping="Wrap" 
-                        FontSize="18" 
-                        Background="#818181" 
-                        Text="{Binding HostUrl, Mode=TwoWay }" 
-                        BorderThickness="0" 
-                        CaretBrush="White"/>
+                    <TextBox
+                        TextAlignment="Left"
+                        TextWrapping="Wrap"
+                        FontSize="18"
+                        Background="#818181"
+                        Text="{Binding HostUrl, Mode=TwoWay }"
+                        BorderThickness="0"
+                        CaretBrush="White" />
                 </StackPanel>
             </StackPanel>
 
@@ -69,16 +72,21 @@
             <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical" Margin="{ DynamicResource TotalMargin2 }">
                 <TextBlock Text="Access Token" FontSize="16" />
                 <DockPanel LastChildFill="True">
-                    <Button Command="{Binding TestTokenCommand}" Width="50" DockPanel.Dock="Right" FontSize="18" Margin="5,0,0,0" Background="{StaticResource {x:Static adonisUi:Brushes.AccentBrush}}">Test</Button>
+                    <Button Command="{Binding TestTokenCommand}"
+                            Width="{StaticResource {x:Static theme:ThemeConstants.SmallButtonWidth } }"
+                            DockPanel.Dock="Right" FontSize="18" Margin="5,0,0,0"
+                            Background="{StaticResource {x:Static adonisUi:Brushes.AccentBrush}}">
+                        Test
+                    </Button>
                     <StackPanel Orientation="Vertical">
-                        <TextBox 
-                            TextAlignment="Left" 
-                            TextWrapping="Wrap" 
-                            FontSize="18" 
-                            Background="#818181" 
-                            Text="{Binding AuthenticationToken, Mode=TwoWay }" 
-                            BorderThickness="0" 
-                            CaretBrush="White"/>
+                        <TextBox
+                            TextAlignment="Left"
+                            TextWrapping="Wrap"
+                            FontSize="18"
+                            Background="#818181"
+                            Text="{Binding AuthenticationToken, Mode=TwoWay }"
+                            BorderThickness="0"
+                            CaretBrush="White" />
                     </StackPanel>
                 </DockPanel>
             </StackPanel>
@@ -86,8 +94,20 @@
 
         <!-- Bottom Buttons -->
         <StackPanel Orientation="Horizontal" Margin="{ DynamicResource TotalMargin2 }" HorizontalAlignment="Right">
-            <Button Margin="10,0,0,0" Command="{ Binding DeleteCommand }" Padding="10" FontSize="16" Background="{StaticResource {x:Static adonisUi:Brushes.ErrorBrush}}">Delete</Button>
-            <Button Margin="10,0,0,0" Command="{ Binding SaveCommand }" Padding="10" FontSize="16" Background="{StaticResource {x:Static adonisUi:Brushes.SuccessBrush}}">Save</Button>
+            <Button
+                extensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource {x:Static theme:ThemeConstants.AccentLightBrush}}"
+                Width="{StaticResource {x:Static theme:ThemeConstants.SmallButtonWidth } }" Margin="10,0,0,0"
+                Command="{ Binding DeleteCommand }" Padding="10" FontSize="16"
+                Background="{StaticResource {x:Static adonisUi:Brushes.ErrorBrush}}">
+                Delete
+            </Button>
+            <Button
+                extensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource {x:Static theme:ThemeConstants.AccentLightBrush}}"
+                Width="{StaticResource {x:Static theme:ThemeConstants.SmallButtonWidth } }" Margin="10,0,0,0"
+                Command="{ Binding SaveCommand }" Padding="10" FontSize="16"
+                Background="{StaticResource {x:Static adonisUi:Brushes.SuccessBrush}}">
+                Save
+            </Button>
         </StackPanel>
     </StackPanel>
 

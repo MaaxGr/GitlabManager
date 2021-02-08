@@ -9,27 +9,5 @@
     
     <Color x:Key="DetailMark">#FFA1A9B3</Color>
     <SolidColorBrush x:Key="DetailMarkBrush" Color="{StaticResource ResourceKey=DetailMark}" />
-    <Style x:Key="FlatTextBox" TargetType="{x:Type TextBox}">
-        
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <StackPanel Orientation="Vertical">
-                        <TextBox 
-                            TextAlignment="Left" 
-                            TextWrapping="Wrap" 
-                            FontSize="18" 
-                            Background="#818181" 
-                            Text="{TemplateBinding Text}" 
-                            BorderThickness="0" 
-                            CaretBrush="White"
-                            Height="{TemplateBinding Height}"/>
-                    </StackPanel>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    
-    
     
 </ResourceDictionary>

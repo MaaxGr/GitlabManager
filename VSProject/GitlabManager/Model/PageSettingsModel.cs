@@ -2,7 +2,6 @@
 using GitlabManager.Framework;
 using GitlabManager.Services.BusinessLogic;
 using GitlabManager.Services.Dialog;
-using GitlabManager.Services.Logging;
 
 namespace GitlabManager.Model
 {
@@ -64,7 +63,6 @@ namespace GitlabManager.Model
             var selectedFolder = _dialogService.SelectFolderDialog(
                 description: "Folder in which your git projects will be downloaded"
             );
-            LoggingService.LogD($"Selected Folder: {selectedFolder}");
 
             CurrentDirectory = selectedFolder;
             _gitlabProjectDownloader.UpdateProjectsDefaultFolder(selectedFolder);

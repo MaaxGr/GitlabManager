@@ -36,8 +36,6 @@ namespace GitlabManager.Services.Cache
             var json = JsonConvert.SerializeObject(jsonProject);
             var filePath = $"{_gitlabManagerCacheFolder}/{fileName}";
             
-            LoggingService.LogD($"File: {filePath}");
-
             var file = File.CreateText(filePath);
             file.Write(json);
             file.Flush();

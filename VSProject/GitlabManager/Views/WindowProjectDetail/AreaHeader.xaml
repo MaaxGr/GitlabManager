@@ -7,10 +7,11 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              xmlns:viewmodels="clr-namespace:GitlabManager.ViewModels"
+             xmlns:theme="clr-namespace:GitlabManager.Theme"
              d:DataContext="{d:DesignInstance viewmodels:WindowProjectDetailViewModel, IsDesignTimeCreatable=True}">
     
-    <StackPanel Background="#3D3E48">
-        <StackPanel Margin="15">
+    <StackPanel Background="{StaticResource {x:Static theme:ThemeConstants.WidgetBackgroundBrush }}">
+        <StackPanel Margin="{StaticResource {x:Static theme:ThemeConstants.WidgetInnerThickness }}">
             <TextBlock Text="{ Binding HeaderTopText  }" FontSize="15" />
             <TextBlock FontWeight="Bold" Text="{ Binding HeaderMainText }" FontSize="30" />
         </StackPanel>

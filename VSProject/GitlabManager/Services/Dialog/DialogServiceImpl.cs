@@ -1,4 +1,6 @@
-﻿using GitlabManager.Services.Logging;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AdonisUI.Controls;
 using Ookii.Dialogs.Wpf;
 
 namespace GitlabManager.Services.Dialog
@@ -9,11 +11,6 @@ namespace GitlabManager.Services.Dialog
     /// </summary>
     public class DialogServiceImpl : IDialogService
     {
-        public void Test()
-        {
-            LoggingService.LogD("Test Dialog Service");
-        }
-
         public string SelectFolderDialog(string description)
         {
             var dialog = new VistaFolderBrowserDialog
@@ -24,8 +21,33 @@ namespace GitlabManager.Services.Dialog
             var result = dialog.ShowDialog();
 
             if (result == null || !(bool) result) return null;
-            
+
             return dialog.SelectedPath;
+        }
+
+        public MessageBoxResult ShowMessageBox(string text, string caption, MessageBoxImage icon,
+            IEnumerable<IMessageBoxButtonModel> buttons)
+        {
+            var messageBox = new MessageBoxModel
+            {
+                Text = text,
+                Caption = caption,
+                Icon = icon,
+                Buttons = buttons.ToArray(),
+            };
+            return MessageBox.Show(messageBox);
+        }
+
+        public void ShowErrorBox(string errorMessage)
+        {
+            var messageBox = new MessageBoxModel
+            {
+                Text = $"Unfortunately an error occurred: {errorMessage}",
+                Caption = "Ups?",
+                Icon = MessageBoxImage.Error,
+                Buttons = new []{ MessageBoxButtons.Ok() },
+            };
+            MessageBox.Show(messageBox);
         }
     }
 }

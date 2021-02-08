@@ -9,7 +9,6 @@ using GitlabManager.Model;
 using GitlabManager.Notifications;
 using GitlabManager.Services.Database.Model;
 using GitlabManager.Services.DI;
-using GitlabManager.Services.Logging;
 using GitlabManager.Utils;
 
 namespace GitlabManager.ViewModels
@@ -134,13 +133,11 @@ namespace GitlabManager.ViewModels
             switch (eventArgs.PropertyName)
             {
                 case nameof(PageAccountsModel.AccountsSorted):
-                    LoggingService.LogD("Update accounts in vm...");
                     RaisePropertyChanged(nameof(Accounts));
                     RaisePropertyChanged(nameof(SelectedAccountSidebar));
                     RaisePropertyChanged(nameof(SelectedAccountDetail));
                     break;
                 case nameof(PageAccountsModel.SelectedAccount):
-                    LoggingService.LogD("Update selected account in vm...");
                     RaisePropertyChanged(nameof(SelectedAccountSidebar));
                     RaisePropertyChanged(nameof(SelectedAccountDetail));
                     break;
@@ -162,7 +159,6 @@ namespace GitlabManager.ViewModels
         private PageAccountsSingleAccountViewModel FindSelectedViewModelInAccountList()
         {
             var sidebarAccount = Accounts.FirstOrDefault(vm => vm.Id == _pageModel.SelectedAccount.Id);
-            LoggingService.LogD($"Sidebar: {sidebarAccount}");
             return sidebarAccount;
         }
 

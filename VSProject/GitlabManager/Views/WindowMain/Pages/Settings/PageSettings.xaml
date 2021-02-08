@@ -1,21 +1,24 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewModels="clr-namespace:GitlabManager.ViewModels"
-                    xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI">
+                    xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+                    xmlns:theme="clr-namespace:GitlabManager.Theme"
+                    xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI">
 
     <DataTemplate DataType="{x:Type viewModels:PageSettingsViewModel}">
 
         <DockPanel Margin="{ DynamicResource TotalMargin }">
-            <TextBlock DockPanel.Dock="Top" FontWeight="Bold" Text="Settings" FontSize="18" Margin="0,0,0,15" />
+            <TextBlock DockPanel.Dock="Top" FontWeight="Bold" Text="Settings" FontSize="{StaticResource {x:Static theme:ThemeConstants.PageHeaderFontSize }}" Margin="0,0,0,15" />
 
             <DockPanel>
                 <!-- Left Area -->
                 <DockPanel>
-                    <StackPanel Orientation="Vertical" Background="#3D3E48">
-                        <StackPanel Orientation="Vertical" Margin="{ DynamicResource TotalMargin2 }">
+                    <StackPanel Orientation="Vertical" Background="{StaticResource {x:Static theme:ThemeConstants.WidgetBackgroundBrush }}">
+                        <StackPanel Orientation="Vertical" Margin="{StaticResource {x:Static theme:ThemeConstants.WidgetInnerThickness }}">
                             <TextBlock Text="Default Directory for Git-Projects" FontSize="16" />
                             <DockPanel LastChildFill="True">
                                 <Button DockPanel.Dock="Right" Margin="10,0,0,0" Command="{ Binding ChangeDefaultProjectsDirectoryCommand }"
+                                        extensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource {x:Static theme:ThemeConstants.AccentLightBrush}}"
                                         Padding="10" FontSize="16"
                                         Background="{StaticResource {x:Static adonisUi:Brushes.AccentBrush}}">
                                     Select Directory

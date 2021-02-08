@@ -7,37 +7,44 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              xmlns:viewmodels="clr-namespace:GitlabManager.ViewModels"
+             xmlns:theme="clr-namespace:GitlabManager.Theme"
+             xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              d:DataContext="{d:DesignInstance viewmodels:WindowProjectDetailViewModel, IsDesignTimeCreatable=True}">
     
-    <StackPanel Orientation="Vertical" Background="#3D3E48">
-        <StackPanel Margin="10">
+    <StackPanel Orientation="Vertical" Background="{StaticResource {x:Static theme:ThemeConstants.WidgetBackgroundBrush }}">
+        <StackPanel Margin="{StaticResource {x:Static theme:ThemeConstants.WidgetInnerThickness }}">
             <TextBlock FontSize="15" Foreground="LightGray" Text="Actions" />
             <Button 
-                Foreground="Black" Background="#FF8E7D" FontSize="15" 
+                Foreground="Black" Background="#FF8E7D" FontSize="{StaticResource {x:Static theme:ThemeConstants.DefaultFontSize}}" 
+                extensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource {x:Static theme:ThemeConstants.AccentLightBrush}}"
                 Padding="5" Margin="0,5,0,0" 
                 Command="{ Binding OpenInBrowserCommand }">
                 Open in Browser
             </Button>
-            <Button Foreground="Black" Background="#FFE18B" FontSize="15" 
+            <Button Foreground="Black" Background="#FFE18B" FontSize="{StaticResource {x:Static theme:ThemeConstants.DefaultFontSize}}" 
                     Padding="5" Margin="0,5,0,0"
+                    extensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource {x:Static theme:ThemeConstants.AccentLightBrush}}"
                     Command="{ Binding CloneProjectToCustomFolderCommand}" 
                     Visibility="{ Binding ButtonCloneVisibility }" >
                 Clone to custom folder in file system
             </Button>
-            <Button Foreground="Black" Background="#FFE18B" FontSize="15" 
+            <Button Foreground="Black" Background="#FFE18B" FontSize="{StaticResource {x:Static theme:ThemeConstants.DefaultFontSize}}" 
                     Padding="5" Margin="0,5,0,0"
+                    extensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource {x:Static theme:ThemeConstants.AccentLightBrush}}"
                     Command="{ Binding CloneProjectToDefaultFolderCommand}" 
                     Visibility="{ Binding ButtonCloneVisibility }" >
                 Clone to default folder in file system
             </Button>
-            <Button Foreground="Black" Background="#FFE18B" FontSize="15" 
+            <Button Foreground="Black" Background="#FFE18B" FontSize="{StaticResource {x:Static theme:ThemeConstants.DefaultFontSize}}" 
                     Padding="5" Margin="0,5,0,0"
+                    extensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource {x:Static theme:ThemeConstants.AccentLightBrush}}"
                     Command="{ Binding OpenInExplorerCommand}"
                     Visibility="{ Binding ButtonOpenInVisibility }">
                 Open in Explorer
             </Button>
-            <Button Foreground="Black" Background="#FFE18B" FontSize="15" 
+            <Button Foreground="Black" Background="#FFE18B" FontSize="{StaticResource {x:Static theme:ThemeConstants.DefaultFontSize}}" 
                     Padding="5" Margin="0,5,0,0"
+                    extensions:CursorSpotlightExtension.BackgroundBrush="{StaticResource {x:Static theme:ThemeConstants.AccentLightBrush}}"
                     Command="{ Binding OpenInVSCodeCommand}"
                     Visibility="{ Binding ButtonOpenInVisibility }">
                 Open in VS Code

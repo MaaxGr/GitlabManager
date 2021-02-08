@@ -1,15 +1,20 @@
-﻿namespace GitlabManager.Services.Dialog
+﻿using System.Collections.Generic;
+using AdonisUI.Controls;
+
+namespace GitlabManager.Services.Dialog
 {
     /// <summary>
     /// Service for creating and presenting dialogs to the user
-    /// TODO muss noch implementiert werden
     /// </summary>
     public interface IDialogService
     {
-
-        public void Test();
-
+        
         public string SelectFolderDialog(string description);
+
+        public MessageBoxResult ShowMessageBox(string text, string caption, MessageBoxImage icon,
+            IEnumerable<IMessageBoxButtonModel> buttons);
+
+        public void ShowErrorBox(string errorMessage);
 
     }
 }
