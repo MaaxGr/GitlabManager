@@ -94,7 +94,6 @@ namespace GitlabManager.ViewModels
         {
             try
             {
-                _dialogService.ShowErrorBox("das ist ein test");
                 _windowModel.OpenProjectInBrowser();
             }
             catch (Exception e)

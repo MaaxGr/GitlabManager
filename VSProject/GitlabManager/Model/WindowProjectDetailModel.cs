@@ -114,6 +114,7 @@ namespace GitlabManager.Model
             var folderName = _jsonProject.NameWithNamespace
                 .Replace("/", "-")
                 .Replace(" ", "")
+                .Replace("ß", "ss")
                 .ToLower();
             var folderPath = $"{_gitlabProjectDownloader.ProjectsDefaultFolder}/{folderName}";
             CloneProjectToFolder(folderPath);

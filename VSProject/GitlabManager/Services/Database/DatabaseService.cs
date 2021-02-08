@@ -192,7 +192,7 @@ namespace GitlabManager.Services.Database
         [CanBeNull]
         private DbSetting GetSetting(string key)
         {
-            return _settings.First(s => s.Key == key);
+            return _settings.FirstOrDefault(s => s.Key == key);
         }
 
         /// <summary>

@@ -99,6 +99,12 @@ namespace GitlabManager.ViewModels
         /// </summary>
         private void DeleteCommandExecutor()
         {
+            // not delete if not created
+            if (Id == 0)
+            {
+                return;
+            }
+            
             var result = _dialogService.ShowMessageBox(
                 $"Are you sure that the account '{Identifier}' should be removed?",
                 $"Remove Account: {Identifier}",

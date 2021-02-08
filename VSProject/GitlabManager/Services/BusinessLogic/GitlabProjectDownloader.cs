@@ -17,8 +17,8 @@ namespace GitlabManager.Services.BusinessLogic
         /// (Is by default: Documents/GitlabManagerProjects)
         /// </summary>
         private const string SettingKeyDefaultProjectDir = "default_project_dir";
-        
-        
+
+
         private IGitlabAccountClient _gitlabAccountClient;
         private readonly DatabaseService _databaseService;
 
@@ -31,8 +31,6 @@ namespace GitlabManager.Services.BusinessLogic
         {
             // init dependencies
             _databaseService = databaseService;
-            
-
         }
 
         #region Public Methods
@@ -45,14 +43,14 @@ namespace GitlabManager.Services.BusinessLogic
             // set initial directory
             var documentFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             var initialDirectory = $"{documentFolder}/GitlabManagerProjects";
-            
+
             // find out default directory
             var persistedDefaultDir = _databaseService.GetSettingsValue(SettingKeyDefaultProjectDir);
-            ProjectsDefaultFolder =  persistedDefaultDir ?? initialDirectory;
-            
+            ProjectsDefaultFolder = persistedDefaultDir ?? initialDirectory;
+
             CreateDirectoriesIfNotExist();
         }
-        
+
         /// <summary>
         /// Init connection to gitlab account for specific project
         /// </summary>
@@ -62,7 +60,7 @@ namespace GitlabManager.Services.BusinessLogic
             InitCommon();
             _gitlabAccountClient = gitlabAccountClient;
         }
-        
+
         /// <summary>
         /// Update default folder for projects (database setting will be updated also)
         /// </summary>
@@ -72,7 +70,7 @@ namespace GitlabManager.Services.BusinessLogic
             ProjectsDefaultFolder = path;
             _databaseService.WriteSettingValue(SettingKeyDefaultProjectDir, path);
         }
-        
+
         /// <summary>
         /// Download a project for a given url to the specified folder
         /// </summary>
@@ -84,15 +82,16 @@ namespace GitlabManager.Services.BusinessLogic
             var currentGitlabSession = await _gitlabAccountClient.GetCurrentSession();
             var username = currentGitlabSession.Username;
             var accessToken = _gitlabAccountClient.GetAccessToken();
-            
+
             var urlWithCredentials = IncludeCredentialsInUrl(httpsCloneUrl, username, accessToken);
 
             // re-clone, if folder already exist  
             if (Directory.Exists(folderPath))
             {
-                Directory.Delete(folderPath);
+                Directory.Delete(folderPath, true);
             }
-            
+     
+
             return await Task.Run(() =>
             {
                 var createdPath = Repository.Clone(urlWithCredentials, folderPath);
@@ -127,6 +126,5 @@ namespace GitlabManager.Services.BusinessLogic
         }
 
         #endregion
-        
     }
 }
